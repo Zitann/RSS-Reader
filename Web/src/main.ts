@@ -7,8 +7,8 @@ import 'element-plus/dist/index.css'
 import './style.css'
 
 const routes = [
-    { path: '/login', component: () => import('./assets/views/LoginRegisterPage.vue') },
-    { path: '/home', component: () => import('./assets/views/HomePage.vue') },
+    { path: '/login', component: () => import('./views/LoginRegisterPage.vue') },
+    { path: '/home', component: () => import('./views/HomePage.vue') },
 ]
 
 const router = createRouter({
