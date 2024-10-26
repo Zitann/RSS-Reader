@@ -13,8 +13,8 @@
                 <div class="right-part flex w-1/2 h-full bg-theme-color-white relative flex-col justify-center p-30"
                     v-if="!isRegister" key="login">
                     <div class="form flex flex-col items-center space-y-3" @keyup.enter="handleLogin">
-                        <el-input style="width: 70%" placeholder="邮箱" v-model="loginInfo.email" />
-                        <el-input style="width: 70%" placeholder="密码" type="password" v-model="loginInfo.passwd" />
+                        <el-input class="w-8/12" placeholder="邮箱" v-model="loginInfo.email" />
+                        <el-input class=" w-8/12" placeholder="密码" type="password" v-model="loginInfo.passwd" />
                     </div>
                     <div class="action mt-8 flex justify-center">
                         <div class="login-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-2 mr-5 text-center"
@@ -22,7 +22,6 @@
                         <div class="register-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-1 text-center"
                             @click="isRegister = !isRegister">注册</div>
                     </div>
-                    <p class="forget-passwd-button cursor-pointer text-sm mt-5 text-gray-600 text-center">忘记密码 ?</p>
                 </div>
                 <!-- 注册 -->
                 <div class="right-part flex w-1/2 h-full bg-theme-color-white relative flex-col justify-center p-30"
@@ -32,9 +31,9 @@
                         <Close />
                     </div>
                     <div class="form flex flex-col items-center space-y-3" @keyup.enter="handleRegister">
-                        <el-input style="width: 70%" placeholder="邮箱" v-model="registerInfo.email" />
-                        <el-input style="width: 70%" placeholder="密码" type="password" v-model="registerInfo.passwd" />
-                        <el-input style="width: 70%" placeholder="确认密码" type="password" v-model="registerInfo.confirmPasswd" />
+                        <el-input class=" w-8/12" placeholder="邮箱" v-model="registerInfo.email" />
+                        <el-input class=" w-8/12" placeholder="密码" type="password" v-model="registerInfo.passwd" />
+                        <el-input class=" w-8/12" placeholder="确认密码" type="password" v-model="registerInfo.confirmPasswd" />
                     </div>
                     <div class="action mt-8 flex justify-center">
                         <div class="register-button p-1 text-white w-2/5 cursor-pointer rounded shadow-sm bg-theme-color-1 text-center"
