@@ -10,6 +10,17 @@ const encodePassword = (password: string) => {
   return crypto.createHash("sha256").update(password).digest("hex");
 };
 
+interface User {
+  id: number;
+  email: string;
+}
+
+declare module "express" {
+  interface Request {
+    auth?: User;
+  }
+}
+
 interface UserRegister {
   username: string;
   email: string;
@@ -87,7 +98,7 @@ router.post(
       },
       "secret",
       {
-        expiresIn: "1h",
+        expiresIn: "1d",
         algorithm: "HS256",
       },
     );
