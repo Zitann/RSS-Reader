@@ -1,19 +1,10 @@
 import express from "express";
 import Result from "../utils/result";
 import { prisma } from "../lib/prisma";
+import Parser from "rss-parser";
 
 const router = express.Router();
-
-interface User {
-  id: number;
-  email: string;
-}
-
-declare module "express" {
-  interface Request {
-    auth?: User;
-  }
-}
+const parser = new Parser();
 
 interface FeedListQuery {
   tag_id: string;
@@ -71,5 +62,91 @@ router.get("/:id", async (req: express.Request<FeedParams>, res) => {
   res.send(Result.success(feed));
   return;
 });
+
+router.delete("/:id", async (req: express.Request<FeedParams>, res) => {
+  const user = req.auth;
+  if (!user) {
+    res.send(Result.fail("用户未登录"));
+    return;
+  }
+
+  const { id } = req.params;
+  await prisma.userSubscription.delete({
+    select: {
+      feed_id: true,
+    },
+    where: {
+      user_id_feed_id: {
+        feed_id: parseInt(id),
+        user_id: user.id,
+      },
+    },
+  });
+
+  res.send(Result.success(null));
+  return;
+});
+
+interface FeedBody {
+  url: string;
+  tag_id: number;
+}
+
+router.post(
+  "/",
+  async (req: express.Request<unknown, unknown, FeedBody>, res) => {
+    const user = req.auth;
+    if (!user) {
+      res.send(Result.fail("用户未登录"));
+      return;
+    }
+
+    const { url, tag_id } = req.body;
+    const { title, description } = await parser.parseURL(url);
+    const feed = await prisma.feed.create({
+      data: {
+        url,
+        tag_id,
+        title,
+        description,
+        updated_at: new Date(),
+        users: {
+          create: {
+            user_id: user.id,
+          },
+        },
+      },
+    });
+
+    res.send(Result.success(feed));
+    return;
+  },
+);
+
+router.put(
+  "/:id",
+  async (req: express.Request<FeedParams, unknown, FeedBody>, res) => {
+    const user = req.auth;
+    if (!user) {
+      res.send(Result.fail("用户未登录"));
+      return;
+    }
+
+    const { id } = req.params;
+    const { tag_id } = req.body;
+    const feed = await prisma.feed.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        tag_id,
+        updated_at: new Date(),
+      },
+    });
+
+    res.send(Result.success(feed));
+    return;
+  },
+);
 
 export default router;

@@ -3,6 +3,8 @@ import { expressjwt } from "express-jwt";
 
 import userRouter from "./routes/user";
 import feedRouter from "./routes/feed";
+import articleRouter from "./routes/article";
+
 import Parser from "rss-parser";
 import job from "./utils/parse";
 
@@ -22,6 +24,7 @@ app.use(
 
 app.use("/", userRouter);
 app.use("/feed", feedRouter);
+app.use("/article", articleRouter);
 
 job.invoke();
 
