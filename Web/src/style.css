@@ -5,3 +5,7 @@
 .el-input__wrapper.is-focus{
     box-shadow: 0 0 0 1px rgb(121,168,169) inset;
 }
+
+*{
+    @apply select-none;
+}

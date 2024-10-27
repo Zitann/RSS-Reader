@@ -9,7 +9,7 @@
 
 
 <script>
-import ArticleListItem from './ArticleListItem'
+import ArticleListItem from './ArticleListItem.vue'
 
 export default {
     name:'article-group',
@@ -24,18 +24,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-.article-group{
-    margin-bottom:30px; 
-
-    >p{
-        margin-bottom: 5px;
-        color: $theme-color-2;
-    }
-
-    .article-list-item:first-child{
-        border-top: 1px solid #dae4e4;
-    }
-}
-</style>
