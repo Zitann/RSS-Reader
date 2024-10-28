@@ -1,7 +1,10 @@
 <template>
     <div class="sider-bar text-theme-color-white h-full flex flex-col">
-        <div class="user flex items-center justify-center">
+        <div class="user flex items-center justify-center relative">
             <img class="w-20 h-20 rounded-full my-5" :src="userAvatar">
+            <div class="absolute top-auto left-auto rounded-full w-20 h-20 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300" @click="exitClick">
+                <img class="w-8 h-8 translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(255,255,255,1.00)]" :src="exit" alt="Exit Icon">
+            </div>
         </div>
         <div class="menu">
             <ul class=" bg-theme-color-2 flex items-center justify-evenly">
@@ -34,6 +37,7 @@ import youtube from "../assets/youtube_cute_fi.svg"
 import mic from "../assets/mic_cute_fi.svg"
 import announcement from "../assets/announcement_cute_fi.svg"
 import star from "../assets/star_cute_fi.svg"
+import exit from "../assets/exit_cute_re.svg"
 
 const userAvatar = ref('https://avatars.githubusercontent.com/u/23514289?v=4')
 const menuList = ref([
@@ -81,5 +85,8 @@ const activeIndex = ref(1)
 const activeRssid = ref(-1)
 const typeSelect = (index: number) => {
     activeIndex.value = index
+}
+const exitClick = () => {
+    console.log('exitClick')
 }
 </script>

@@ -7,6 +7,7 @@ import 'element-plus/dist/index.css'
 import './style.css'
 
 const routes = [
+    { path: '/', redirect: '/home' },
     { path: '/login', component: () => import('./views/LoginRegisterPage.vue') },
     { path: '/home', component: () => import('./views/HomePage.vue') },
 ]
