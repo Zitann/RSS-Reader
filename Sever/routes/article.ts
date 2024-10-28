@@ -55,6 +55,11 @@ router.get(
         is_favorited: true,
         user_id: true,
       },
+      orderBy: {
+        article: {
+          published_at: "desc",
+        },
+      },
     });
 
     res.send(Result.success(statusList));
@@ -91,6 +96,7 @@ router.get("/:id", async (req: express.Request<ArticleParams>, res) => {
       feed: {
         select: {
           title: true,
+          tag_id: true,
         },
       },
       content: true,

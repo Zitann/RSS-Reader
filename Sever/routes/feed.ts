@@ -34,6 +34,9 @@ router.get(
         },
         tag_id: tag_id ? parseInt(tag_id) : undefined,
       },
+      orderBy: {
+        updated_at: "desc",
+      },
     });
 
     res.send(Result.success(feedList));
