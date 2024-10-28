@@ -4,15 +4,12 @@
             <div class=" w-1/6 bg-theme-color-2 rounded-md">
                 <SiderBar/>
             </div>
-            <!-- <div :style="{background:$store.isLoading?'#d4dcdcc4':'none'}">
-                <SearchButton v-if="articleGroups.length > 0"/>
-                <ArticleGroup v-for="(group,index) in articleGroups" :key="index" :group="group"/>
-                <div class="nothing" v-if="articleGroups.length === 0">
-                   <Icon type="ios-snow-outline"  size="300" style="color:#c5d0d0a1;"/>
-                </div> -->
-                <!-- <Loading class="loading-wrapper" v-if="$store.isLoading"/> -->
-                <!-- <svg class="animate-spin h-5 w-5 mr-3 " viewBox="0 0 24 24" v-if="$store.isLoading"></svg>
-            </div> -->
+            <div class="w-1/6">
+                <ArticleGroup/>
+            </div>
+            <div class="w-4/6">
+                <ArticleDetails/>
+            </div>
         </div>
     </div>
 </template>
@@ -20,7 +17,6 @@
 
 <script setup lang="ts">
 import SiderBar from '../components/SiderBar.vue'
-// import SearchButton from '../components/SearchButton.vue'
-// import ArticleGroup from '../components/ArticleGroup.vue'
-
+import ArticleGroup from '../components/ArticleGroup.vue'
+import ArticleDetails from '../components/ArticleDetails.vue';
 </script>

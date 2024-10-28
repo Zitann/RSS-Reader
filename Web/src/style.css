@@ -9,3 +9,7 @@
 *{
     @apply select-none;
 }
+
+ul::-webkit-scrollbar {
+	display: none;
+}

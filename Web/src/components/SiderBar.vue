@@ -10,13 +10,13 @@
                 </li>
             </ul>
         </div>
-        <div class="mt-2 text-zinc-100 font-bold text-lg">
-            <div class="star flex items-center m-2 rounded-lg hover:bg-theme-color-1 hover:shadow-md cursor-pointer">
+        <div class="mt-2 text-zinc-100 font-bold text-lg h-5/6">
+            <div class="star flex items-center m-2 rounded-lg hover:bg-theme-color-1 hover:shadow-md cursor-pointer h-fit" @click="activeRssid=0" :class="{'bg-theme-color-1 shadow-md rounded-lg':0 === activeRssid}">
                 <img class="s-6 m-3 translate-x-[-1000px]" :src="star" :style="{filter:'drop-shadow(1000px 0px #f59e0b)'}">
                 <p>收藏</p>
             </div>
-            <ul class="rss-list bg-theme-color-2 flex flex-col m-2 ">
-                <li v-for="rss in rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg" :title="rss.name">
+            <ul class="rss-list bg-theme-color-2 flex flex-col m-2 overflow-y-auto h-5/6">
+                <li v-for="rss in rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg" :title="rss.name" @click="activeRssid=rss.id" :class="{'bg-theme-color-1 shadow-md rounded-lg':rss.id === activeRssid}">
                     <p>{{ rss.name }}</p>
                 </li>
             </ul>
@@ -59,9 +59,26 @@ const rssList = ref([
     { id: 12, name: '虎扑', url: 'https://rsshub.app/hupu/bbs/7' },
     { id: 13, name: '知乎日报', url: 'https://rsshub.app/zhihu/daily' },
     { id: 14, name: '果壳', url: 'https://rsshub.app/guokr/scientific' },
-    { id: 15, name: 'IT之家', url: ''}
+    { id: 15, name: 'IT之家', url: ''},
+    { id: 16, name: '少数派', url: 'https://rsshub.app/sspai/shortcuts' },
+    { id: 17, name: '36氪', url: 'https://rsshub.app/36kr/newsflashes' },
+    { id: 18, name: '虎扑', url: 'https://rsshub.app/hupu/bbs/7' },
+    { id: 19, name: '知乎日报', url: 'https://rsshub.app/zhihu/daily' },
+    { id: 20, name: '果壳', url: 'https://rsshub.app/guokr/scientific' },
+    { id: 21, name: 'IT之家', url: ''},
+    { id: 22, name: '少数派', url: 'https://rsshub.app/sspai/shortcuts' },
+    { id: 23, name: '36氪', url: 'https://rsshub.app/36kr/newsflashes' },
+    { id: 24, name: '虎扑', url: 'https://rsshub.app/hupu/bbs/7' },
+    { id: 25, name: '知乎日报', url: 'https://rsshub.app/zhihu/daily' },
+    { id: 26, name: '果壳', url: 'https://rsshub.app/guokr/scientific' },
+    { id: 27, name: 'IT之家', url: ''},
+    { id: 28, name: '少数派', url: 'https://rsshub.app/sspai/shortcuts' },
+    { id: 29, name: '36氪', url: 'https://rsshub.app/36kr/newsflashes' },
+    { id: 30, name: '虎扑', url: 'https://rsshub.app/hupu/bbs/7' },
+    { id: 31, name: '知乎日报', url: 'https://rsshub.app/zhihu/daily' },
 ])
 const activeIndex = ref(1)
+const activeRssid = ref(-1)
 const typeSelect = (index: number) => {
     activeIndex.value = index
 }
