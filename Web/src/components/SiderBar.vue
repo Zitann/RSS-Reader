@@ -1,5 +1,5 @@
 <template>
-    <div class="sider-bar text-theme-color-white h-full relative">
+    <div class="sider-bar text-theme-color-white h-full flex flex-col">
         <div class="user flex items-center justify-center">
             <img class="w-20 h-20 rounded-full my-5" :src="userAvatar">
         </div>
@@ -10,12 +10,12 @@
                 </li>
             </ul>
         </div>
-        <div class="mt-2 text-zinc-100 font-bold text-lg h-5/6">
+        <div class="mt-2 text-zinc-100 font-bold text-lg flex-1 flex flex-col overflow-hidden">
             <div class="star flex items-center m-2 rounded-lg hover:bg-theme-color-1 hover:shadow-md cursor-pointer h-fit" @click="activeRssid=0" :class="{'bg-theme-color-1 shadow-md rounded-lg':0 === activeRssid}">
                 <img class="s-6 m-3 translate-x-[-1000px]" :src="star" :style="{filter:'drop-shadow(1000px 0px #f59e0b)'}">
                 <p>收藏</p>
             </div>
-            <ul class="rss-list bg-theme-color-2 flex flex-col m-2 overflow-y-auto h-5/6">
+            <ul class="rss-list bg-theme-color-2 flex flex-col m-2 overflow-y-auto flex-1">
                 <li v-for="rss in rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg" :title="rss.name" @click="activeRssid=rss.id" :class="{'bg-theme-color-1 shadow-md rounded-lg':rss.id === activeRssid}">
                     <p>{{ rss.name }}</p>
                 </li>
