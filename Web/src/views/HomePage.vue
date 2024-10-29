@@ -1,18 +1,15 @@
 <template>
     <div class="home-page w-screen h-screen bg-theme-color-1 flex items-center justify-center">
         <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
-        <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
             <div class=" w-1/6 bg-theme-color-2 rounded-md relative">
-                <SiderBar :rss-list="rssList"/>
-                <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" @click="addRss" >+</button>
-                <SiderBar :rss-list="rssList"/>
+                <SiderBar :rss-list="rssList" @typeSelect="getFeedList"/>
                 <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" @click="addRss" >+</button>
             </div>
             <div class="w-1/6">
-                <ArticleGroup/>
+                <ArticleGroup @article-selected="handleArticleSelected"/>
             </div>
             <div class="w-4/6">
-                <ArticleDetails/>
+                <ArticleDetails :article_id="currentArticleId"/>
             </div>
         </div>
     </div>
@@ -31,6 +28,7 @@ import { onMounted, ref } from 'vue';
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
 const currentArticle = ref()  // 当前文章
+const currentArticleId = ref()  // 当前文章id
 const currentRss = ref()  // 文章列表
 const rssList = ref([])
 onMounted(()=>{
@@ -41,6 +39,7 @@ onMounted(()=>{
             type: 'warning'
         })
         router.push('/login')
+        return
     }
     getFeedList(1)
 })
@@ -48,7 +47,12 @@ onMounted(()=>{
 const getFeedList = async (tag_id:number) => {
     const res = await getFeedListApi(tag_id)
     if(res.data.code == 'success'){
-        rssList.value = res.data.data
+        rssList.value = res.data.data.map((item:any)=>{
+            return {
+                id: item.feed.id,
+                name: item.feed.title
+            }
+        })
     }else{
         ElNotification({
             title: '获取文章列表失败',
@@ -61,7 +65,7 @@ const getFeedList = async (tag_id:number) => {
 const addRss = async () => {
     const data = {
         tag_id: 1,
-        url: 'https://www.zhihu.com/rss'
+        url: 'https://diygod.cc/feed'
     }
     const res = await addFeedApi(data)
     console.log(res)
@@ -81,5 +85,7 @@ const addRss = async () => {
     }
 }
 
-
+const handleArticleSelected = (id:number) => {
+    currentArticleId.value = id
+}
 </script>

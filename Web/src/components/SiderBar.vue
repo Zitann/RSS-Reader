@@ -40,8 +40,10 @@ import star from "../assets/star_cute_fi.svg"
 import exit from "../assets/exit_cute_re.svg"
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
+
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
+const emit = defineEmits(['typeSelect'])
 
 const userAvatar = ref('https://avatars.githubusercontent.com/u/23514289?v=4')
 const menuList = ref([
@@ -59,6 +61,7 @@ const activeIndex = ref(1)
 const activeRssid = ref(-1)
 const typeSelect = (index: number) => {
     activeIndex.value = index
+    emit('typeSelect', index)
 }
 const exitClick = () => {
     token.token = ''

@@ -9,7 +9,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { defineProps, ref, onMounted, watch } from 'vue';
+import { getArticleApi } from '../api/index.ts';
+
+
+//调用接口获取文章详情
+// //获取文章
+// export function getArticleApi(article_id: number) {
+//     return fetch.get(`/article/${article_id}`)
+// }
+
+const props = defineProps({
+  article_id: {
+    type: Number,
+    required: true
+  }
+});
+
 
 const article = ref({
     "id": 22,
@@ -29,4 +45,17 @@ const article = ref({
       }
     ]
   })
+
+const fetchArticle = async () => {
+  try {
+    const response = await getArticleApi(props.article_id);
+    article.value = response.data;
+    console.log('aaaaaaaaaaaaaaaarticleClick');
+  } catch (error) {
+    console.error('Failed to fetch article:', error);
+  }
+};
+
+watch(() => props.article_id, fetchArticle, { immediate: true });
+
 </script>

@@ -58,21 +58,7 @@ const articleList = ref([
     {id:13,title:'少数派13',is_read:true,is_favorited:false},
     {id:14,title:'少数派14',is_read:false,is_favorited:false},
     {id:15,title:'少数派15',is_read:false,is_favorited:false},
-    {id:1,title:'少数派1',is_read:true,is_favorited:false},
-    {id:2,title:'少数派2',is_read:false,is_favorited:false},
-    {id:3,title:'少数派3',is_read:false,is_favorited:false},
-    {id:4,title:'少数派4',is_read:true,is_favorited:false},
-    {id:5,title:'少数派5',is_read:false,is_favorited:true},
-    {id:6,title:'少数派6',is_read:false,is_favorited:false},
-    {id:7,title:'少数派7',is_read:true,is_favorited:false},
-    {id:8,title:'少数派8',is_read:false,is_favorited:false},
-    {id:9,title:'少数派9',is_read:false,is_favorited:false},
-    {id:10,title:'少数派10',is_read:true,is_favorited:false},
-    {id:11,title:'少数派11',is_read:false,is_favorited:false},
-    {id:12,title:'少数派12',is_read:false,is_favorited:false},
-    {id:13,title:'少数派13',is_read:true,is_favorited:false},
-    {id:14,title:'少数派14',is_read:false,is_favorited:false},
-    {id:15,title:'少数派15',is_read:false,is_favorited:false},
+    
 ])
 const refreshArticleBtnClick = () => {
     console.log('refreshArticleBtnClick')
@@ -81,9 +67,14 @@ const isAllClick = () => {
     isAll.value = !isAll.value
     console.log('isAllClick')
 }
+
+const emits = defineEmits(['article-selected']);
+
 const articleClick = (id:number) => {
-    console.log('articleClick',id)
-}
+    emits('article-selected', id);
+    console.log('articddddddddddddleClick', id);
+};
+
 const starClick = (id:number) => {
     console.log('starClick',id)
 }
