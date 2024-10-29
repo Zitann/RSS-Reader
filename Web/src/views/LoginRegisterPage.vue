@@ -14,7 +14,7 @@
                     v-if="!isRegister" key="login">
                     <div class="form flex flex-col items-center space-y-3" @keyup.enter="handleLogin">
                         <el-input class="w-8/12" placeholder="邮箱" v-model="loginInfo.email" />
-                        <el-input class=" w-8/12" placeholder="密码" type="password" v-model="loginInfo.passwd" />
+                        <el-input class=" w-8/12" placeholder="密码" type="password" v-model="loginInfo.password" />
                     </div>
                     <div class="action mt-8 flex justify-center">
                         <div class="login-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-2 mr-5 text-center"
@@ -31,9 +31,10 @@
                         <Close />
                     </div>
                     <div class="form flex flex-col items-center space-y-3" @keyup.enter="handleRegister">
+                        <el-input class=" w-8/12" placeholder="用户名" v-model="registerInfo.username" />
                         <el-input class=" w-8/12" placeholder="邮箱" v-model="registerInfo.email" />
-                        <el-input class=" w-8/12" placeholder="密码" type="password" v-model="registerInfo.passwd" />
-                        <el-input class=" w-8/12" placeholder="确认密码" type="password" v-model="registerInfo.confirmPasswd" />
+                        <el-input class=" w-8/12" placeholder="密码" type="password" v-model="registerInfo.password" />
+                        <el-input class=" w-8/12" placeholder="确认密码" type="password" v-model="registerInfo.repassword" />
                     </div>
                     <div class="action mt-8 flex justify-center">
                         <div class="register-button p-1 text-white w-2/5 cursor-pointer rounded shadow-sm bg-theme-color-1 text-center"
@@ -47,7 +48,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { ElNotification } from 'element-plus'
+import { registerApi, loginApi } from '../api';
+import tokenStore from '../utils/store';
+import { useRouter } from 'vue-router';
 import axios from "axios";
+const token = tokenStore()
+const router = useRouter()
 const welcomeInfo = ref({
     hitokoto: '',
     from: ''
@@ -55,22 +62,68 @@ const welcomeInfo = ref({
 const isRegister = ref(false)
 const loginInfo = ref({
     email: '',
-    passwd: ''
+    password: ''
 })
 const registerInfo = ref({
+    username: '',
     email: '',
-    passwd: '',
-    confirmPasswd: ''
+    password: '',
+    repassword: ''
 })
 onMounted(async () => {
     const res = await axios.get('https://v1.hitokoto.cn')
     welcomeInfo.value.hitokoto = res.data.hitokoto
     welcomeInfo.value.from = res.data.from
 })
-const handleLogin = () => {
-    console.log('login')
+const handleLogin = async () => {
+    if (!loginInfo.value.email || !loginInfo.value.password) {
+        ElNotification({
+            title: '登录失败',
+            message: '请填写完整信息',
+            type: 'error'
+        })
+        return
+    }
+    let res = await loginApi(loginInfo.value)
+    if (res.data.code === 'success') {
+        ElNotification({
+            title: '登录成功',
+            message: '欢迎回来',
+            type: 'success'
+        })
+        token.token = res.data.data.token
+        router.push('/home')
+    } else {
+        ElNotification({
+            title: '登录失败',
+            message: res.data.data,
+            type: 'error'
+        })
+    }
 }
-const handleRegister = () => {
-    console.log('register')
+const handleRegister = async () => {
+    if (!registerInfo.value.username || !registerInfo.value.email || !registerInfo.value.password || !registerInfo.value.repassword) {
+        ElNotification({
+            title: '注册失败',
+            message: '请填写完整信息',
+            type: 'error'
+        })
+        return
+    }
+    let res = await registerApi(registerInfo.value)
+    if (res.data.code === 'success') {
+        ElNotification({
+            title: '注册成功',
+            message: '请登录',
+            type: 'success'
+        })
+        isRegister.value = false
+    } else {
+        ElNotification({
+            title: '注册失败',
+            message: res.data.data,
+            type: 'error'
+        })
+    }
 }
 </script>

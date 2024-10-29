@@ -15,10 +15,10 @@ const service = axios.create({
 //     }
 // )
 
-//向应拦截器
+// 向应拦截器
 // service.interceptors.response.use(
 //     response => {
-        
+//         return response.data
 //     },
 //     error => {
         

@@ -38,6 +38,10 @@ import mic from "../assets/mic_cute_fi.svg"
 import announcement from "../assets/announcement_cute_fi.svg"
 import star from "../assets/star_cute_fi.svg"
 import exit from "../assets/exit_cute_re.svg"
+import tokenStore from '../utils/store';
+import { useRouter } from 'vue-router';
+const token = tokenStore()  // 使用token.token对token进行操作
+const router = useRouter()
 
 const userAvatar = ref('https://avatars.githubusercontent.com/u/23514289?v=4')
 const menuList = ref([
@@ -87,6 +91,7 @@ const typeSelect = (index: number) => {
     activeIndex.value = index
 }
 const exitClick = () => {
-    console.log('exitClick')
+    token.token = ''
+    router.push('/login')
 }
 </script>
