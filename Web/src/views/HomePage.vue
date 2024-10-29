@@ -57,8 +57,8 @@ const getFeedList = async (tag_id:number) => {
 
 const addRss = async () => {
     const data = {
-        tag_id: '1',
-        url: 'https://www.zhihu.com/rss'
+        tag_id: 1,
+        url: 'https://diygod.cc/feed'
     }
     const res = await addFeedApi(data)
     console.log(res)
