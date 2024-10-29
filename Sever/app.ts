@@ -1,6 +1,7 @@
 import express from "express";
 import { expressjwt } from "express-jwt";
-
+// 导入cors
+import cors from "cors";
 import userRouter from "./routes/user";
 import feedRouter from "./routes/feed";
 import articleRouter from "./routes/article";
@@ -12,15 +13,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept",
-  );
-  next();
-});
 
 app.use(
   expressjwt({
