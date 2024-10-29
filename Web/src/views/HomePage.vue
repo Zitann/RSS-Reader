@@ -1,8 +1,9 @@
 <template>
     <div class="home-page w-screen h-screen bg-theme-color-1 flex items-center justify-center">
         <div class="center-content bg-theme-color-white w-3/4 h-5/6 rounded-md shadow-lg shadow-theme-color-3 flex md:w-full md:h-full">
-            <div class=" w-1/6 bg-theme-color-2 rounded-md">
+            <div class=" w-1/6 bg-theme-color-2 rounded-md relative">
                 <SiderBar/>
+                <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" >+</button>
             </div>
             <div class="w-1/6">
                 <ArticleGroup/>
@@ -23,9 +24,11 @@ import { ElNotification } from 'element-plus'  // 用于消息通知
 import {  } from '../api';
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
+const currentArticle = ref()  // 当前文章
+const currentRss = ref()  // 文章列表
 onMounted(()=>{
     if(!token.token){
         ElNotification({
