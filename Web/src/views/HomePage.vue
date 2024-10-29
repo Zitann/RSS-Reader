@@ -1,7 +1,10 @@
 <template>
     <div class="home-page w-screen h-screen bg-theme-color-1 flex items-center justify-center">
         <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
+        <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
             <div class=" w-1/6 bg-theme-color-2 rounded-md relative">
+                <SiderBar :rss-list="rssList"/>
+                <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" @click="addRss" >+</button>
                 <SiderBar :rss-list="rssList"/>
                 <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" @click="addRss" >+</button>
             </div>
