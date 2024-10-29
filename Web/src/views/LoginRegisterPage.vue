@@ -114,10 +114,22 @@ const handleRegister = async () => {
     if (res.data.code === 'success') {
         ElNotification({
             title: '注册成功',
-            message: '请登录',
+            message: '欢迎加入',
             type: 'success'
         })
-        isRegister.value = false
+        loginInfo.value.email = registerInfo.value.email
+        loginInfo.value.password = registerInfo.value.password
+        let res = await loginApi(loginInfo.value)
+        if (res.data.code === 'success') {
+            token.token = res.data.data.token
+            router.push('/home')
+        } else {
+            ElNotification({
+                title: '登录失败',
+                message: res.data.data,
+                type: 'error'
+            })
+        }
     } else {
         ElNotification({
             title: '注册失败',
