@@ -26,7 +26,6 @@ model Tag {
   name       String   @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  feeds      Feed[]
 }
 
 model Feed {
@@ -41,8 +40,6 @@ model Feed {
   updated_at      DateTime           @updatedAt
   articles        Article[]
   users           UserSubscription[]
-  tag_id          Int
-  tag             Tag                @relation(fields: [tag_id], references: [id])
 }
 
 model UserSubscription {
@@ -52,6 +49,7 @@ model UserSubscription {
   feed       Feed     @relation(fields: [feed_id], references: [id])
   feed_id    Int
   is_active  Boolean  @default(true)
+  tag_id     Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

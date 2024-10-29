@@ -25,17 +25,14 @@ router.get(
     const { id } = user;
     const { tag_id } = req.query;
     console.log(typeof tag_id);
-    const feedList = await prisma.feed.findMany({
-      where: {
-        users: {
-          some: {
-            user_id: id,
-          },
-        },
-        tag_id: tag_id ? parseInt(tag_id) : undefined,
+    const feedList = await prisma.userSubscription.findMany({
+      select: {
+        feed: true,
+        tag_id: true,
       },
-      orderBy: {
-        updated_at: "desc",
+      where: {
+        user_id: id,
+        tag_id: tag_id ? parseInt(tag_id) : undefined,
       },
     });
 
@@ -56,11 +53,20 @@ router.get("/:id", async (req: express.Request<FeedParams>, res) => {
   }
 
   const { id } = req.params;
-  const feed = await prisma.feed.findUnique({
+  const feed = await prisma.userSubscription.findFirst({
+    select: {
+      feed: true,
+    },
     where: {
-      id: parseInt(id) ?? undefined,
+      user_id: user.id,
+      feed_id: id ? parseInt(id) : undefined,
     },
   });
+
+  if (!feed) {
+    res.send(Result.fail("未找到订阅"));
+    return;
+  }
 
   res.send(Result.success(feed));
   return;
@@ -105,24 +111,46 @@ router.post(
     }
 
     const { url, tag_id } = req.body;
-    const { title, description } = await parser.parseURL(url);
-    const feed = await prisma.feed.create({
-      data: {
-        url,
-        tag_id,
-        title,
-        description,
-        updated_at: new Date(),
-        users: {
-          create: {
-            user_id: user.id,
-          },
+    // 检测数据库中是否已经存在该订阅
+    let feed = await prisma.feed.findFirst({
+      where: {
+        url: url,
+      },
+    });
+    // 如果不存在则创建
+    if (!feed) {
+      const { title, description } = await parser.parseURL(url);
+      feed = await prisma.feed.create({
+        data: {
+          url,
+          title,
+          description,
         },
+      });
+    }
+
+    // 是否已经订阅
+    const subscription = await prisma.userSubscription.findFirst({
+      where: {
+        user_id: user.id,
+        feed_id: feed.id,
+      },
+    });
+
+    if (subscription) {
+      res.send(Result.fail("已经订阅"));
+      return;
+    }
+
+    await prisma.userSubscription.create({
+      data: {
+        user_id: user.id,
+        feed_id: feed.id,
+        tag_id,
       },
     });
 
     res.send(Result.success(feed));
-    return;
   },
 );
 
@@ -137,13 +165,18 @@ router.put(
 
     const { id } = req.params;
     const { tag_id } = req.body;
-    const feed = await prisma.feed.update({
+    const feed = await prisma.userSubscription.update({
+      select: {
+        feed: true,
+      },
       where: {
-        id: parseInt(id),
+        user_id_feed_id: {
+          feed_id: parseInt(id),
+          user_id: user.id,
+        },
       },
       data: {
         tag_id,
-        updated_at: new Date(),
       },
     });
 

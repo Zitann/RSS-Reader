@@ -19,7 +19,7 @@
                 <p>收藏</p>
             </div>
             <ul class="rss-list bg-theme-color-2 flex flex-col m-2 overflow-y-auto flex-1">
-                <li v-for="rss in rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg" :title="rss.name" @click="activeRssid=rss.id" :class="{'bg-theme-color-1 shadow-md rounded-lg':rss.id === activeRssid}">
+                <li v-for="rss in props.rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg" :title="rss.name" @click="activeRssid=rss.id" :class="{'bg-theme-color-1 shadow-md rounded-lg':rss.id === activeRssid}">
                     <p>{{ rss.name }}</p>
                 </li>
             </ul>
@@ -52,39 +52,9 @@ const menuList = ref([
     { index: 5, title: '音频', icon: mic,color:'drop-shadow(1000px 0px rgb(147,51,234))' },
     { index: 6, title: '通知', icon: announcement ,color:'drop-shadow(1000px 0px rgb(202,138,4))'},
 ])
-const rssList = ref([
-    { id: 1, name: '知乎', url: 'https://www.zhihu.com/rss' },
-    { id: 2, name: '微博', url: 'https://rss.weibo.com/2650085724/9e2a3e2f/rss' },
-    { id: 3, name: '微信', url: 'https://rsshub.app/wechat/wemedia/officialaccount/gh_3e8e0f3f9e0b' },
-    { id: 4, name: '豆瓣', url: 'https://rsshub.app/douban/mine/126212' },
-    { id: 5, name: '简书', url: 'https://rsshub.app/jianshu/user/9104f3b6b3b3' },
-    { id: 6, name: 'CSDN', url: 'https://rsshub.app/csdn/blog/qq_38225558' },
-    { id: 7, name: '博客园', url: 'https://rsshub.app/cnblogs/qq_38225558' },
-    { id: 8, name: '掘金', url: 'https://rsshub.app/juejin/user/5c4cbf8ff265da611b7baf3e' },
-    { id: 9, name: '开发者头条', url: 'https://rsshub.app/wechat/wemedia/officialaccount/gh_6b8a6f7f1e9c' },
-    { id: 10, name: 'V2EX', url: 'https://rsshub.app/v2ex/topics/latest' },
-    { id: 11, name: '36氪', url: 'https://rsshub.app/36kr/newsflashes' },
-    { id: 12, name: '虎扑', url: 'https://rsshub.app/hupu/bbs/7' },
-    { id: 13, name: '知乎日报', url: 'https://rsshub.app/zhihu/daily' },
-    { id: 14, name: '果壳', url: 'https://rsshub.app/guokr/scientific' },
-    { id: 15, name: 'IT之家', url: ''},
-    { id: 16, name: '少数派', url: 'https://rsshub.app/sspai/shortcuts' },
-    { id: 17, name: '36氪', url: 'https://rsshub.app/36kr/newsflashes' },
-    { id: 18, name: '虎扑', url: 'https://rsshub.app/hupu/bbs/7' },
-    { id: 19, name: '知乎日报', url: 'https://rsshub.app/zhihu/daily' },
-    { id: 20, name: '果壳', url: 'https://rsshub.app/guokr/scientific' },
-    { id: 21, name: 'IT之家', url: ''},
-    { id: 22, name: '少数派', url: 'https://rsshub.app/sspai/shortcuts' },
-    { id: 23, name: '36氪', url: 'https://rsshub.app/36kr/newsflashes' },
-    { id: 24, name: '虎扑', url: 'https://rsshub.app/hupu/bbs/7' },
-    { id: 25, name: '知乎日报', url: 'https://rsshub.app/zhihu/daily' },
-    { id: 26, name: '果壳', url: 'https://rsshub.app/guokr/scientific' },
-    { id: 27, name: 'IT之家', url: ''},
-    { id: 28, name: '少数派', url: 'https://rsshub.app/sspai/shortcuts' },
-    { id: 29, name: '36氪', url: 'https://rsshub.app/36kr/newsflashes' },
-    { id: 30, name: '虎扑', url: 'https://rsshub.app/hupu/bbs/7' },
-    { id: 31, name: '知乎日报', url: 'https://rsshub.app/zhihu/daily' },
-])
+const props = defineProps<{
+    rssList: any[]
+}>()
 const activeIndex = ref(1)
 const activeRssid = ref(-1)
 const typeSelect = (index: number) => {

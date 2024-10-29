@@ -30,8 +30,12 @@ router.get(
         user_id: id,
         article: {
           feed_id: feed_id ? parseInt(feed_id) : undefined,
-          feed: {
-            tag_id: tag_id ? parseInt(tag_id) : undefined,
+        },
+        user: {
+          subscriptions: {
+            some: {
+              tag_id: tag_id ? parseInt(tag_id) : undefined,
+            },
           },
         },
         is_read: is_read ? is_read === "true" : undefined,
@@ -51,9 +55,18 @@ router.get(
             },
           },
         },
+        user: {
+          select: {
+            subscriptions: {
+              select: {
+                user_id: true,
+                tag_id: true,
+              },
+            },
+          },
+        },
         is_read: true,
         is_favorited: true,
-        user_id: true,
       },
       orderBy: {
         article: {
@@ -96,7 +109,6 @@ router.get("/:id", async (req: express.Request<ArticleParams>, res) => {
       feed: {
         select: {
           title: true,
-          tag_id: true,
         },
       },
       content: true,
@@ -105,6 +117,15 @@ router.get("/:id", async (req: express.Request<ArticleParams>, res) => {
           user_id: true,
           is_read: true,
           is_favorited: true,
+          user: {
+            select: {
+              subscriptions: {
+                select: {
+                  tag_id: true,
+                },
+              },
+            },
+          },
         },
       },
     },
