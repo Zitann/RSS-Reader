@@ -9,15 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, onMounted, watch } from 'vue';
+import { defineProps, ref, watch } from 'vue';
 import { getArticleApi } from '../api/index.ts';
 
-
-//调用接口获取文章详情
-// //获取文章
-// export function getArticleApi(article_id: number) {
-//     return fetch.get(`/article/${article_id}`)
-// }
 
 const props = defineProps({
   article_id: {
@@ -28,8 +22,8 @@ const props = defineProps({
 
 
 const article = ref({
-    "id": 22,
-    "title": "从果香到泥煤：苏格兰威士忌入门指北",
+    "id": -1,
+    "title": "",
     "link": "https://sspai.com/prime/story/scotch-whisky-101",
     "feed_id": 1,
     "feed": {
@@ -49,13 +43,14 @@ const article = ref({
 const fetchArticle = async () => {
   try {
     const response = await getArticleApi(props.article_id);
-    article.value = response.data;
+    article.value = response.data.data;
     console.log('aaaaaaaaaaaaaaaarticleClick');
   } catch (error) {
     console.error('Failed to fetch article:', error);
   }
 };
+defineExpose({fetchArticle})
 
-watch(() => props.article_id, fetchArticle, { immediate: true });
+watch(() => props.article_id, fetchArticle);
 
 </script>

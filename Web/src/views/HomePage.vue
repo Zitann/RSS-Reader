@@ -9,7 +9,7 @@
                 <ArticleGroup @article-selected="handleArticleSelected"/>
             </div>
             <div class="w-4/6">
-                <ArticleDetails :article_id="currentArticleId"/>
+                <ArticleDetails :article_id="currentArticleId" ref="articleDetail"/>
             </div>
         </div>
     </div>
@@ -27,9 +27,7 @@ import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
-const currentArticle = ref()  // 当前文章
 const currentArticleId = ref()  // 当前文章id
-const currentRss = ref()  // 文章列表
 const rssList = ref([])
 onMounted(()=>{
     if(!token.token){
@@ -85,7 +83,10 @@ const addRss = async () => {
     }
 }
 
+const articleDetail = ref()
+
 const handleArticleSelected = (id:number) => {
     currentArticleId.value = id
+   // articleDetail.value.fetchArticle()
 }
 </script>
