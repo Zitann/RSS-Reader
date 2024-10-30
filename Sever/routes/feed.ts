@@ -2,6 +2,7 @@ import express from "express";
 import Result from "../utils/result";
 import { prisma } from "../lib/prisma";
 import Parser from "rss-parser";
+import { updateArticleBySubscription } from "../utils/parse";
 
 const router = express.Router();
 const parser = new Parser();
@@ -130,10 +131,13 @@ router.post(
     }
 
     // 是否已经订阅
-    const subscription = await prisma.userSubscription.findFirst({
+    let subscription = await prisma.userSubscription.findFirst({
       where: {
         user_id: user.id,
         feed_id: feed.id,
+      },
+      include: {
+        feed: true,
       },
     });
 
@@ -142,13 +146,18 @@ router.post(
       return;
     }
 
-    await prisma.userSubscription.create({
+    subscription = await prisma.userSubscription.create({
       data: {
         user_id: user.id,
         feed_id: feed.id,
         tag_id,
       },
+      include: {
+        feed: true,
+      },
     });
+
+    await updateArticleBySubscription(subscription);
 
     res.send(Result.success(feed));
   },
