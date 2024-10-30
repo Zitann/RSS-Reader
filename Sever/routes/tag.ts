@@ -10,6 +10,21 @@ router.get("/", async (req, res) => {
   return;
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.send(Result.fail("参数错误"));
+    return;
+  }
+  const tag = await prisma.tag.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+  });
+  res.send(Result.success(tag));
+  return;
+});
+
 router.post("/", async (req, res) => {
   const { name } = req.body;
   const tag = await prisma.tag.create({

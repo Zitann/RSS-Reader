@@ -5,8 +5,10 @@ import { Feed, UserSubscription } from "@prisma/client";
 
 const parser = new Parser();
 
+type Subscription = UserSubscription & Record<"feed", Feed>;
+
 export const updateArticleBySubscription = async (
-  subscription: UserSubscription & Record<"feed", Feed>,
+  subscription: Subscription,
 ) => {
   const {
     feed: { url, id },
