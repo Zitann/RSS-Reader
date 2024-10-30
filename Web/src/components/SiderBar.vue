@@ -14,7 +14,7 @@
             </ul>
         </div>
         <div class="mt-2 text-zinc-100 font-bold text-lg flex-1 flex flex-col overflow-hidden">
-            <div class="star flex items-center m-2 rounded-lg hover:bg-theme-color-1 hover:shadow-md cursor-pointer h-fit" @click="activeRssid=0" :class="{'bg-theme-color-1 shadow-md rounded-lg':0 === activeRssid}">
+            <div class="star flex items-center m-2 rounded-lg hover:bg-theme-color-1 hover:shadow-md cursor-pointer h-fit" @click="handleFavoriteClick" :class="{'bg-theme-color-1 shadow-md rounded-lg':0 === activeRssid}">
                 <img class="s-6 m-3 translate-x-[-1000px]" :src="star" :style="{filter:'drop-shadow(1000px 0px #f59e0b)'}">
                 <p>收藏</p>
             </div>
@@ -63,6 +63,7 @@ const activeRssid = ref(-1)
 const typeSelect = (index: number) => {
     activeIndex.value = index
     emit('typeSelect', index)
+    //favoriteArticleList()
 }
 const exitClick = () => {
     token.token = ''
@@ -81,5 +82,25 @@ const rssClick = async (rssId: number) => {
         console.log(res.data.data)
     }
     emit('articleList', res.data.data)
+}
+
+const favoriteArticleList = async () => {
+    
+    const params = {
+        is_favorited: true,
+        tag_id: activeIndex.value
+    }
+    console.log('favoriteArticleList')
+    const res = await getArticleListApi(params)
+    if(res.data.code == 'success'){
+        console.log(res.data.data)
+    }else{
+        console.log(res.data.data)
+    }
+    emit('articleList', res.data.data)
+}
+const handleFavoriteClick = () => {
+    favoriteArticleList();
+    activeRssid.value = 0;
 }
 </script>
