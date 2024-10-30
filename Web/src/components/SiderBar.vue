@@ -68,12 +68,7 @@ const exitClick = () => {
     token.token = ''
     router.push('/login')
 }
-//调用接口获取文章列表
-// export function getArticleListApi(params: any) {
-//     return fetch.get('/article', {
-//         params
-//     })
-// }
+
 const rssClick = async (rssId: number) => {
     activeRssid.value = rssId
     const params = {

@@ -1,7 +1,7 @@
 <template>
     <div class="article-group flex flex-col h-full">
        <div class="top flex items-center justify-between p-4">
-            <h1 class=" font-black text-2xl">{{ rssName }}</h1>
+            <h1 class=" font-black text-2xl">{{ articleList[0].article.feed.title }}</h1>
             <ul class="btns flex items-center space-x-1">
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="refreshArticleBtnClick" title="同步">
                     <img class="translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(0,0,0,0.5)]" :src="refresh">
@@ -9,7 +9,7 @@
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="isAllClick" :title="isAll?'全部':'未读'">
                     <img class="translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(0,0,0,0.5)]" :src="isAll?round_re:round_fi">
                 </li>
-                <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" title="全部标记已读">
+                <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="markAllArticleIsRead"title="全部标记已读">
                     <img class="translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(0,0,0,0.5)]" :src="check">
                 </li>
             </ul>
@@ -40,15 +40,17 @@ import refresh from "../assets/refresh_2_cute_re.svg"
 import check from "../assets/check_circle_cute_re.svg"
 import star from "../assets/star_cute_fi.svg"
 import { markArticleApi } from '../api'
-const rssName = ref('少数派')
+const rssName = ref()
 const isLoading = ref(false)
 const isAll = ref(true)
 const props = defineProps<{
     articleList: any[]
 }>();
+
 watch(() => props.articleList, (newVal) => {
     console.log('articleList', newVal)
 })
+
 const refreshArticleBtnClick = () => {
     console.log('refreshArticleBtnClick')
 }
@@ -81,6 +83,20 @@ const mark_is_read = async (id: number) => {
         console.log('标记失败')
     }
     console.log('mark_is_read', id);
+};
+
+const markAllArticleIsRead = async () => {
+    const data = {
+        article_id: props.articleList.map(article => article.article.id),
+        is_read: true
+    }
+    const res = await markArticleApi(data)
+    if(res.data.code == 'success'){
+        props.articleList.forEach(article => article.is_read = true)
+    }else{
+        console.log('标记失败')
+    }
+    console.log('markAllArticleIsRead');
 };
 
 const starClick = async (id: number) => {
