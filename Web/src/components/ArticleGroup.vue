@@ -16,11 +16,11 @@
        </div>
        <ul class="articles overflow-auto flex-1 border-r-2 border-gray-300" v-if="!isLoading">
             <li v-for="article in props.articleList" :key="article.id" class="item flex items-center justify-between p-4 hover:bg-gray-300" @click="articleClick(article.article.id)">
-                <div class="flex items-center w-10/12">
+                <div class="flex items-center w-11/12">
                     <img class="size-2 rounded-full translate-x-[-1000px] drop-shadow-[1000px_0px_rgb(255,92,0)]" :src="article.is_read?'':round_fi">
                     <p class=" text-base ml-2">{{ article.article.title }}</p>
                 </div>
-                <div class=" w-5 flex items-center hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg cursor-pointer mr-3" @click.stop="starClick(article.article.id)" :title="article.is_favorited?'取消收藏':'收藏'">
+                <div class=" flex items-center hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg cursor-pointer" @click.stop="starClick(article.article.id)" :title="article.is_favorited?'取消收藏':'收藏'">
                     <img class="size-5 m-1" :src="star" :style="{filter:'drop-shadow(1000px 0px #f59e0b)'}" :class="{'translate-x-[-1000px]':article.is_favorited}">
                 </div>
             </li>

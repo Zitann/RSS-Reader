@@ -28,8 +28,8 @@ import { onMounted, ref} from 'vue';
 
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
-const currentArticleId = ref()  // 当前文章id
-const currentArticleList = ref()  // 当前文章列表
+const currentArticleId = ref(-1)  // 当前文章id
+const currentArticleList = ref([])  // 当前文章列表
 const rssList = ref([])
 onMounted(()=>{
     if(!token.token){
