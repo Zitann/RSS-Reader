@@ -9,7 +9,7 @@
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="isAllClick" :title="isAll?'全部':'未读'">
                     <img class="translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(0,0,0,0.5)]" :src="isAll?round_re:round_fi">
                 </li>
-                <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" title="全部标记已读">
+                <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="markAllArticleIsRead"title="全部标记已读">
                     <img class="translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(0,0,0,0.5)]" :src="check">
                 </li>
             </ul>
@@ -81,6 +81,20 @@ const mark_is_read = async (id: number) => {
         console.log('标记失败')
     }
     console.log('mark_is_read', id);
+};
+
+const markAllArticleIsRead = async () => {
+    const data = {
+        article_id: props.articleList.map(article => article.article.id),
+        is_read: true
+    }
+    const res = await markArticleApi(data)
+    if(res.data.code == 'success'){
+        props.articleList.forEach(article => article.is_read = true)
+    }else{
+        console.log('标记失败')
+    }
+    console.log('markAllArticleIsRead');
 };
 
 const starClick = async (id: number) => {
