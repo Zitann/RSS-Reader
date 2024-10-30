@@ -72,11 +72,11 @@ const mark_is_read = async (id: number) => {
     }
     const data = {
         article_id: [id],
-        is_read: !article.is_read
+        is_read: true
     }
     const res = await markArticleApi(data)
     if(res.data.code == 'success'){
-        article.is_read = !article.is_read
+        article.is_read = true
     }else{
         console.log('标记失败')
     }
