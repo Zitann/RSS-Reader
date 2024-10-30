@@ -118,6 +118,16 @@ router.post(
         url: url,
       },
     });
+
+    // 检测链接是否有效
+    try {
+      await parser.parseURL(url);
+    } catch (error) {
+      console.log(error);
+      res.send(Result.fail("链接无效"));
+      return;
+    }
+
     // 如果不存在则创建
     if (!feed) {
       const { title, description } = await parser.parseURL(url);
@@ -157,9 +167,15 @@ router.post(
       },
     });
 
-    await updateArticleBySubscription(subscription);
+    try {
+      await updateArticleBySubscription(subscription);
+    } catch (error) {
+      res.send(Result.fail(error));
+      return;
+    }
 
     res.send(Result.success(feed));
+    return;
   },
 );
 

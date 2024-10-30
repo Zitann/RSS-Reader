@@ -12,34 +12,39 @@ export const updateArticleBySubscription = async (
     feed: { url, id },
     user_id,
   } = subscription;
-  const result = await parser.parseURL(url);
-  for (const item of result.items) {
-    const { title, link, pubDate, contentSnippet, content } = item;
-    const article = await prisma.article.findFirst({
-      where: {
-        link,
-      },
-    });
-    if (!article) {
-      await prisma.article.create({
-        data: {
-          title: title ?? "",
-          link: link ?? "",
-          content: content,
-          description: contentSnippet,
-          published_at: pubDate ? new Date(pubDate) : new Date(),
-          feed_id: id,
-          statuses: {
-            create: {
-              user_id: user_id,
-              updated_at: new Date(),
-            },
-          },
+  try {
+    const result = await parser.parseURL(url);
+    for (const item of result.items) {
+      const { title, link, pubDate, contentSnippet, content } = item;
+      const article = await prisma.article.findFirst({
+        where: {
+          link,
         },
       });
-    } else {
-      break;
+      if (!article) {
+        await prisma.article.create({
+          data: {
+            title: title ?? "",
+            link: link ?? "",
+            content: content,
+            description: contentSnippet,
+            published_at: pubDate ? new Date(pubDate) : new Date(),
+            feed_id: id,
+            statuses: {
+              create: {
+                user_id: user_id,
+                updated_at: new Date(),
+              },
+            },
+          },
+        });
+      } else {
+        break;
+      }
     }
+  } catch (error) {
+    console.log(error);
+    return;
   }
 };
 
@@ -51,7 +56,12 @@ export const updateArticle = async () => {
     },
   });
   for (const subscription of subscrptionList) {
-    await updateArticleBySubscription(subscription);
+    try {
+      await updateArticleBySubscription(subscription);
+    } catch (error) {
+      console.log(error);
+      continue;
+    }
   }
 };
 

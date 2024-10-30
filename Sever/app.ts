@@ -5,6 +5,7 @@ import cors from "cors";
 import userRouter from "./routes/user";
 import feedRouter from "./routes/feed";
 import articleRouter from "./routes/article";
+import tagRouter from "./routes/tag";
 
 import Parser from "rss-parser";
 import job from "./utils/parse";
@@ -14,7 +15,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
-
 
 app.use(
   expressjwt({
@@ -28,6 +28,7 @@ app.use(
 app.use("/", userRouter);
 app.use("/feed", feedRouter);
 app.use("/article", articleRouter);
+app.use("/tag", tagRouter);
 
 job.invoke();
 
