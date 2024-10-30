@@ -4,13 +4,13 @@
             <h1 class=" font-black text-2xl">{{ articleList[0]? articleList[0].article.feed.title: "" }}</h1>
             <ul class="btns flex items-center space-x-1">
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="refreshArticleBtnClick" title="同步">
-                    <img class="translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(0,0,0,0.5)]" :src="refresh">
+                    <img class="translate-x-[-2000px] drop-shadow-[2000px_0px_rgba(0,0,0,0.5)]" :src="refresh">
                 </li>
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="isAllClick" :title="isAll?'全部':'未读'">
-                    <img class="translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(0,0,0,0.5)]" :src="isAll?round_re:round_fi">
+                    <img class="translate-x-[-2000px] drop-shadow-[2000px_0px_rgba(0,0,0,0.5)]" :src="isAll?round_re:round_fi">
                 </li>
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="markAllArticleIsRead"title="全部标记已读">
-                    <img class="translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(0,0,0,0.5)]" :src="check">
+                    <img class="translate-x-[-2000px] drop-shadow-[2000px_0px_rgba(0,0,0,0.5)]" :src="check">
                 </li>
             </ul>
        </div>
