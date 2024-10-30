@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { getArticleApi } from '../api/index.ts';
 
 
@@ -44,7 +44,6 @@ const fetchArticle = async () => {
   try {
     const response = await getArticleApi(props.article_id);
     article.value = response.data.data;
-    console.log('aaaaaaaaaaaaaaaarticleClick');
   } catch (error) {
     console.error('Failed to fetch article:', error);
   }
