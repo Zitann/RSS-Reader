@@ -62,6 +62,25 @@ const emits = defineEmits(['article-selected']);
 const articleClick = (id:number) => {
     emits('article-selected', id);
     console.log('articleClick', id);
+    mark_is_read(id)
+};
+
+const mark_is_read = async (id: number) => {
+    const article = props.articleList.find(article => article.article.id === id);
+    if (!article) {
+        return;
+    }
+    const data = {
+        article_id: [id],
+        is_read: !article.is_read
+    }
+    const res = await markArticleApi(data)
+    if(res.data.code == 'success'){
+        article.is_read = !article.is_read
+    }else{
+        console.log('标记失败')
+    }
+    console.log('mark_is_read', id);
 };
 
 const starClick = async (id: number) => {
