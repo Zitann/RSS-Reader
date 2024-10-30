@@ -15,12 +15,12 @@
             </ul>
        </div>
        <ul class="articles overflow-auto flex-1 border-r-2 border-gray-300" v-if="!isLoading">
-            <li v-for="article in articleList" :key="article.id" class="item flex items-center justify-between p-4 hover:bg-gray-300" @click="articleClick(article.id)">
-                <div class="flex items-center">
+            <li v-for="article in props.articleList" :key="article.id" class="item flex items-center justify-between p-4 hover:bg-gray-300" @click="articleClick(article.article.id)">
+                <div class="flex items-center w-10/12">
                     <img class="size-2 rounded-full translate-x-[-1000px] drop-shadow-[1000px_0px_rgb(255,92,0)]" :src="article.is_read?'':round_fi">
-                    <p class="text-lg ml-2">{{ article.title }}</p>
+                    <p class=" text-base ml-2">{{ article.article.title }}</p>
                 </div>
-                <div class="flex items-center hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg cursor-pointer" @click.stop="starClick(article.id)" :title="article.is_favorited?'取消收藏':'收藏'">
+                <div class=" w-5 flex items-center hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg cursor-pointer mr-3" @click.stop="starClick(article.article.id)" :title="article.is_favorited?'取消收藏':'收藏'">
                     <img class="size-5 m-1" :src="star" :style="{filter:'drop-shadow(1000px 0px #f59e0b)'}" :class="{'translate-x-[-1000px]':article.is_favorited}">
                 </div>
             </li>
@@ -43,24 +43,12 @@ import { markArticleApi } from '../api'
 const rssName = ref('少数派')
 const isLoading = ref(false)
 const isAll = ref(true)
-const articleList = ref([
-    {id:1,title:'少数派1',is_read:true,is_favorited:false},
-    {id:2,title:'少数派2',is_read:false,is_favorited:false},
-    {id:3,title:'少数派3',is_read:false,is_favorited:false},
-    {id:4,title:'少数派4',is_read:true,is_favorited:false},
-    {id:5,title:'少数派5',is_read:false,is_favorited:true},
-    {id:6,title:'少数派6',is_read:false,is_favorited:false},
-    {id:7,title:'少数派7',is_read:true,is_favorited:false},
-    {id:8,title:'少数派8',is_read:false,is_favorited:false},
-    {id:9,title:'少数派9',is_read:false,is_favorited:false},
-    {id:10,title:'少数派10',is_read:true,is_favorited:false},
-    {id:11,title:'少数派11',is_read:false,is_favorited:false},
-    {id:12,title:'少数派12',is_read:false,is_favorited:false},
-    {id:13,title:'少数派13',is_read:true,is_favorited:false},
-    {id:14,title:'少数派14',is_read:false,is_favorited:false},
-    {id:15,title:'少数派15',is_read:false,is_favorited:false},
-    
-])
+const props = defineProps<{
+    articleList: any[]
+}>();
+watch(() => props.articleList, (newVal) => {
+    console.log('articleList', newVal)
+})
 const refreshArticleBtnClick = () => {
     console.log('refreshArticleBtnClick')
 }
@@ -77,12 +65,12 @@ const articleClick = (id:number) => {
 };
 
 const starClick = async (id: number) => {
-    const article = articleList.value.find(article => article.id === id);
+    const article = props.articleList.find(article => article.article.id === id);
     if (!article) {
         return;
     }
     const data = {
-        article_id: id,
+        article_id: [id],
         is_favorited: !article.is_favorited
     }
     const res = await markArticleApi(data)
@@ -92,7 +80,6 @@ const starClick = async (id: number) => {
         console.log('收藏失败')
     }
     console.log('starClick', id);
-
 };
 
 </script>
