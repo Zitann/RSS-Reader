@@ -41,5 +41,5 @@ export function getArticleApi(article_id: number) {
 }
 //标记文章
 export function markArticleApi(data:any) {
-    return fetch.post('/mark', data)
+    return fetch.put('/mark', data)
 }

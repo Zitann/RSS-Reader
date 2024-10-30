@@ -19,7 +19,7 @@
                 <p>收藏</p>
             </div>
             <ul class="rss-list bg-theme-color-2 flex flex-col m-2 overflow-y-auto flex-1">
-                <li v-for="rss in props.rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg" :title="rss.name" @click="activeRssid=rss.id" :class="{'bg-theme-color-1 shadow-md rounded-lg':rss.id === activeRssid}">
+                <li v-for="rss in props.rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg" :title="rss.name" @click="rssClick(rss.id)" :class="{'bg-theme-color-1 shadow-md rounded-lg':rss.id === activeRssid}">
                     <p>{{ rss.name }}</p>
                 </li>
             </ul>
@@ -40,10 +40,11 @@ import star from "../assets/star_cute_fi.svg"
 import exit from "../assets/exit_cute_re.svg"
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
+import { getArticleListApi } from '../api'
 
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
-const emit = defineEmits(['typeSelect'])
+const emit = defineEmits(['typeSelect','articleList'])
 
 const userAvatar = ref('https://avatars.githubusercontent.com/u/23514289?v=4')
 const menuList = ref([
@@ -66,5 +67,24 @@ const typeSelect = (index: number) => {
 const exitClick = () => {
     token.token = ''
     router.push('/login')
+}
+//调用接口获取文章列表
+// export function getArticleListApi(params: any) {
+//     return fetch.get('/article', {
+//         params
+//     })
+// }
+const rssClick = async (rssId: number) => {
+    activeRssid.value = rssId
+    const params = {
+        feed_id: rssId
+    }
+    const res = await getArticleListApi(params)
+    if(res.data.code == 'success'){
+        console.log(res.data.data)
+    }else{
+        console.log(res.data.data)
+    }
+    emit('articleList', res.data.data)
 }
 </script>

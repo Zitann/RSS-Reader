@@ -33,12 +33,13 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch} from 'vue'
 import round_fi from "../assets/round_cute_fi.svg"
 import round_re from "../assets/round_cute_re.svg"
 import refresh from "../assets/refresh_2_cute_re.svg"
 import check from "../assets/check_circle_cute_re.svg"
 import star from "../assets/star_cute_fi.svg"
+import { markArticleApi } from '../api'
 const rssName = ref('少数派')
 const isLoading = ref(false)
 const isAll = ref(true)
@@ -72,10 +73,26 @@ const emits = defineEmits(['article-selected']);
 
 const articleClick = (id:number) => {
     emits('article-selected', id);
-    console.log('articddddddddddddleClick', id);
+    console.log('articleClick', id);
 };
 
-const starClick = (id:number) => {
-    console.log('starClick',id)
-}
+const starClick = async (id: number) => {
+    const article = articleList.value.find(article => article.id === id);
+    if (!article) {
+        return;
+    }
+    const data = {
+        article_id: id,
+        is_favorited: !article.is_favorited
+    }
+    const res = await markArticleApi(data)
+    if(res.data.code == 'success'){
+        article.is_favorited = !article.is_favorited
+    }else{
+        console.log('收藏失败')
+    }
+    console.log('starClick', id);
+
+};
+
 </script>

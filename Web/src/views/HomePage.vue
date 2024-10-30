@@ -2,11 +2,11 @@
     <div class="home-page w-screen h-screen bg-theme-color-1 flex items-center justify-center">
         <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
             <div class=" w-1/6 bg-theme-color-2 rounded-md relative">
-                <SiderBar :rss-list="rssList" @typeSelect="getFeedList"/>
+                <SiderBar :rss-list="rssList" @typeSelect="getFeedList" @articleLIst="handleCurrentArticleList"/>
                 <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" @click="addRss" >+</button>
             </div>
             <div class="w-1/6">
-                <ArticleGroup @article-selected="handleArticleSelected"/>
+                <ArticleGroup @article-selected="handleArticleSelected" :articleList="currentArticleList" />
             </div>
             <div class="w-4/6">
                 <ArticleDetails :article_id="currentArticleId" ref="articleDetail"/>
@@ -24,10 +24,12 @@ import { ElNotification } from 'element-plus'  // 用于消息通知
 import { getFeedListApi, addFeedApi } from '../api';
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref} from 'vue';
+
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
 const currentArticleId = ref()  // 当前文章id
+const currentArticleList = ref()  // 当前文章列表
 const rssList = ref([])
 onMounted(()=>{
     if(!token.token){
@@ -89,4 +91,9 @@ const handleArticleSelected = (id:number) => {
     currentArticleId.value = id
    // articleDetail.value.fetchArticle()
 }
+const handleCurrentArticleList = (list:any) => {
+    currentArticleList.value = list
+    console.log("currentArticleList")
+}
+
 </script>
