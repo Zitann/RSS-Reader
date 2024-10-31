@@ -44,7 +44,7 @@ import { getArticleListApi } from '../api'
 
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
-const emit = defineEmits(['typeSelect','articleList'])
+const emit = defineEmits(['typeSelect','articleList','title_is_favorited'])
 
 const userAvatar = ref('https://avatars.githubusercontent.com/u/23514289?v=4')
 const menuList = ref([
@@ -98,6 +98,7 @@ const favoriteArticleList = async () => {
         console.log(res.data.data)
     }
     emit('articleList', res.data.data)
+    emit('title_is_favorited',true)
 }
 const handleFavoriteClick = () => {
     favoriteArticleList();

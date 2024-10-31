@@ -1,7 +1,7 @@
 <template>
     <div class="article-group flex flex-col h-full">
        <div class="top flex items-center justify-between p-4">
-            <h1 class=" font-black text-2xl">{{ articleList[0]? articleList[0].article.feed.title: "" }}</h1>
+            <h1 class=" font-black text-2xl">{{ titleIsFavorited == true? '收藏':(articleList[0]?articleList[0].article.feed.title: "" )}}</h1>
             <ul class="btns flex items-center space-x-1">
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="refreshArticleBtnClick" title="同步">
                     <img class="translate-x-[-2000px] drop-shadow-[2000px_0px_rgba(0,0,0,0.5)]" :src="refresh">
@@ -40,11 +40,11 @@ import refresh from "../assets/refresh_2_cute_re.svg"
 import check from "../assets/check_circle_cute_re.svg"
 import star from "../assets/star_cute_fi.svg"
 import { markArticleApi } from '../api'
-const rssName = ref()
 const isLoading = ref(false)
 const isAll = ref(true)
 const props = defineProps<{
-    articleList: any[]
+    articleList: any[],
+    titleIsFavorited:Boolean
 }>();
 
 watch(() => props.articleList, (newVal) => {

@@ -2,11 +2,11 @@
     <div class="home-page w-screen h-screen bg-theme-color-1 flex items-center justify-center">
         <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
             <div class=" w-1/6 bg-theme-color-2 rounded-md relative">
-                <SiderBar :rss-list="rssList" @typeSelect="handleFeedList" @articleList="handleCurrentArticleList"/>
+                <SiderBar :rss-list="rssList" @typeSelect="handleFeedList" @articleList="handleCurrentArticleList" @title_is_favorited="handleArticleGroupTitle"/>
                 <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" @click="showModal" >+</button>
             </div>
             <div class="w-3/12">
-                <ArticleGroup @article-selected="handleArticleSelected" :articleList="currentArticleList" />
+                <ArticleGroup @article-selected="handleArticleSelected" :articleList="currentArticleList" :titleIsFavorited="articleGroupTitle_is_favorited" />
             </div>
             <div class="w-7/12">
                 <ArticleDetails :article_id="currentArticleId" ref="articleDetail"/>
@@ -45,6 +45,7 @@ const router = useRouter()
 const currentArticleId = ref(-1)  // 当前文章id
 const currentArticleList = ref([])  // 当前文章列表
 const currentType = ref(1)  // 当前文章类型
+const articleGroupTitle_is_favorited = ref(false)
 const url = ref('')
 const rssList = ref([])
 onMounted(()=>{
@@ -107,8 +108,13 @@ const handleArticleSelected = (id:number) => {
 }
 const handleCurrentArticleList = (list:any) => {
     currentArticleList.value = list
+    articleGroupTitle_is_favorited.value = false
 }
-
+const handleArticleGroupTitle = (title_is_favorited:boolean)=>{
+    if(title_is_favorited){
+        articleGroupTitle_is_favorited.value = true;
+    }
+}
 const isModalVisible = ref(false)
 const showModal = () => {
     isModalVisible.value = true;
