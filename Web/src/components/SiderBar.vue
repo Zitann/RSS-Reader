@@ -78,6 +78,7 @@ import exit from "../assets/exit_cute_re.svg"
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
 import { getArticleListApi } from '../api'
+import { el } from 'element-plus/es/locales.mjs'
 
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
@@ -109,8 +110,12 @@ const typeSelect = (index: number) => {
     //favoriteArticleList()
 }
 const exitClick = () => {
-    token.token = ''
-    router.push('/login')
+    ModalData.value = {
+        title: '退出登录',
+        content: '确定退出登录吗？',
+        select: -1
+    }
+    isModalVisible.value = true
 }
 
 const rssClick = async (rssId: number) => {
@@ -168,10 +173,13 @@ const closeModal = () => {
 }
 const submitModal = () => {
     isModalVisible.value = false
-    if(ModalData.value.select == -1){
+    if(ModalData.value.title == '取消订阅'){
         deleteRss()
-    }else{
+    }else if(ModalData.value.title == '修改类别'){
         changeTag(ModalData.value.select)
+    }else if(ModalData.value.title == '退出登录'){
+        token.token = ''
+        router.push('/login')
     }
 }
 const deleteRss = async () => {
