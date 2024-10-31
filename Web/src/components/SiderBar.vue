@@ -19,17 +19,54 @@
                 <p>收藏</p>
             </div>
             <ul class="rss-list bg-theme-color-2 flex flex-col m-2 overflow-y-auto flex-1">
-                <li v-for="rss in props.rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg" :title="rss.name" @click="rssClick(rss.id)" :class="{'bg-theme-color-1 shadow-md rounded-lg':rss.id === activeRssid}">
+                <li v-for="rss in props.rssList" :key="rss.id" class="p-3 cursor-pointer hover:bg-theme-color-1 hover:shadow-md hover:rounded-lg flex items-center justify-between" :title="rss.name" @click="rssClick(rss.id)" :class="{'bg-theme-color-1 shadow-md rounded-lg':rss.id === activeRssid}">
                     <p>{{ rss.name }}</p>
+                    <el-dropdown trigger="click" v-show="rss.id === activeRssid" @click.stop>
+                        <span class="el-dropdown-link text-zinc-100">
+                        ···
+                        </span>
+                        <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item @click="handleDeleteRss">取消订阅</el-dropdown-item>
+                            <el-dropdown-item @click="handleChangeTag">修改类别</el-dropdown-item>
+                        </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                 </li>
             </ul>
         </div>
     </div>
+    <IModal v-if="isModalVisible" @click="closeModal">
+        <h2 class="text-lg font-bold mb-4">{{ ModalData.title }}</h2>
+        <p>{{ ModalData.content }}</p>
+        <el-select
+        class="mt-8"
+        v-model="ModalData.select"
+        placeholder="Select"
+        size="large"
+        style="width: 240px"
+        v-if="ModalData.select!=-1"
+        >
+            <el-option
+                v-for="item in menuList"
+                :key="item.index"
+                :label="item.title"
+                :value="item.index"
+            />
+        </el-select>
+        <div class="action mt-8 flex justify-center">
+            <div class="login-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-2 mr-5 text-center"
+                @click="submitModal">确定</div>
+            <div class="register-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-1 text-center"
+                @click="closeModal">取消</div>
+        </div>
+    </IModal>
 </template>
 
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import IModal from './IModal.vue'
 import paper from "../assets/paper_cute_fi.svg"
 import twitter from "../assets/twitter_cute_fi.svg"
 import pic from "../assets/pic_cute_fi.svg"
@@ -46,6 +83,7 @@ const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
 const emit = defineEmits(['typeSelect','articleList','title_is_favorited'])
 
+const isModalVisible = ref(false)
 const userAvatar = ref('https://avatars.githubusercontent.com/u/23514289?v=4')
 const menuList = ref([
     { index: 1, title: '文章', icon: paper,color:'drop-shadow(1000px 0px rgb(255,92,0))'},
@@ -60,6 +98,11 @@ const props = defineProps<{
 }>()
 const activeIndex = ref(1)
 const activeRssid = ref(-1)
+const ModalData = ref({
+    title: '',
+    content: '',
+    select: activeIndex.value
+})
 const typeSelect = (index: number) => {
     activeIndex.value = index
     emit('typeSelect', index)
@@ -103,5 +146,38 @@ const favoriteArticleList = async () => {
 const handleFavoriteClick = () => {
     favoriteArticleList();
     activeRssid.value = 0;
+}
+const handleDeleteRss = () => {
+    ModalData.value = {
+        title: '取消订阅',
+        content: '确定取消订阅吗？',
+        select: -1
+    }
+    isModalVisible.value = true
+}
+const handleChangeTag = () => {
+    ModalData.value = {
+        title: '修改类别',
+        content: '请选择新的类别',
+        select: activeIndex.value
+    }
+    isModalVisible.value = true
+}
+const closeModal = () => {
+    isModalVisible.value = false
+}
+const submitModal = () => {
+    isModalVisible.value = false
+    if(ModalData.value.select == -1){
+        deleteRss()
+    }else{
+        changeTag(ModalData.value.select)
+    }
+}
+const deleteRss = async () => {
+    console.log('deleteRss',activeRssid.value)
+}
+const changeTag = async (tag_id:number) => {
+    console.log('changeTag',tag_id)
 }
 </script>

@@ -12,20 +12,16 @@
                 <ArticleDetails :article_id="currentArticleId" ref="articleDetail"/>
             </div>
         </div>
-
-        <!-- Modal -->
-        <div v-if="isModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="closeModal">
-            <div class=" bg-white p-8 rounded-lg shadow-lg" @click.stop>
-                <h2 class="text-lg font-bold mb-4">添加订阅源</h2>
-                <el-input placeholder="请输入完整的URL" v-model="url" />
-                <div class="action mt-8 flex justify-center">
-                    <div class="login-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-2 mr-5 text-center"
-                        @click="submitModal">确定</div>
-                    <div class="register-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-1 text-center"
-                        @click="closeModal">取消</div>
-                </div>
+        <IModal v-if="isModalVisible" @click="closeModal">
+            <h2 class="text-lg font-bold mb-4">添加订阅源</h2>
+            <el-input placeholder="请输入完整的URL" v-model="url" />
+            <div class="action mt-8 flex justify-center">
+                <div class="login-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-2 mr-5 text-center"
+                    @click="submitModal">确定</div>
+                <div class="register-button p-1 text-white w-1/3 cursor-pointer rounded shadow-sm bg-theme-color-1 text-center"
+                    @click="closeModal">取消</div>
             </div>
-        </div>
+        </IModal>
     </div>
 </template>
 
@@ -34,6 +30,7 @@
 import SiderBar from '../components/SiderBar.vue'
 import ArticleGroup from '../components/ArticleGroup.vue'
 import ArticleDetails from '../components/ArticleDetails.vue';
+import IModal from '../components/IModal.vue';
 import { ElNotification } from 'element-plus'  // 用于消息通知
 import { getFeedListApi, addFeedApi } from '../api';
 import tokenStore from '../utils/store';
