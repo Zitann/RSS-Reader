@@ -41,11 +41,10 @@ import check from "../assets/check_circle_cute_re.svg"
 import star from "../assets/star_cute_fi.svg"
 import { markArticleApi } from '../api'
 import { getArticleListApi } from '../api'
-import { title } from 'process'
 const isLoading = ref(false)
 const isAll = ref(true)
 const update = ref(false)
-const updateArticleList = ref([])
+const updateArticleList = ref<any[]>([])
 const props = defineProps<{
     articleList: any[],
     titleIsFavorited:Boolean
@@ -177,16 +176,31 @@ const mark_is_read = async (id: number) => {
 };
 
 const markAllArticleIsRead = async () => {
-    const data = {
-        article_id: props.articleList.map(article => article.article.id),
-        is_read: true
-    }
-    const res = await markArticleApi(data)
-    if(res.data.code == 'success'){
+    if(update.value == true){
+        const data = {
+            article_id: updateArticleList.value.map(article => article.article.id),
+            is_read: true
+        }
+        const res = await markArticleApi(data)
+        if(res.data.code == 'success'){
         props.articleList.forEach(article => article.is_read = true)
     }else{
         console.log('标记失败')
     }
+    }else{
+        const data = {
+            article_id: props.articleList.map(article => article.article.id),
+            is_read: true
+        }
+        const res = await markArticleApi(data)
+        if(res.data.code == 'success'){
+        props.articleList.forEach(article => article.is_read = true)
+    }else{
+        console.log('标记失败')
+    }
+    }
+    
+    
     console.log('markAllArticleIsRead');
 };
 
