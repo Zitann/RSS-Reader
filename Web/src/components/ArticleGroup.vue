@@ -40,6 +40,7 @@ import refresh from "../assets/refresh_2_cute_re.svg"
 import check from "../assets/check_circle_cute_re.svg"
 import star from "../assets/star_cute_fi.svg"
 import { markArticleApi } from '../api'
+import { getArticleListApi } from '../api'
 const isLoading = ref(false)
 const isAll = ref(true)
 const props = defineProps<{
@@ -51,9 +52,21 @@ watch(() => props.articleList, (newVal) => {
     console.log('articleList', newVal)
 })
 
-const refreshArticleBtnClick = () => {
-    console.log('refreshArticleBtnClick')
+const refreshArticleBtnClick = async () => {
+    isLoading.value = true;
+    const params = {
+        feed_id: props.articleList[0].article.feed_id
+    }
+    const res = await getArticleListApi(params)
+    if(res.data.code == 'success'){
+        props.articleList.values = res.data.data
+        console.log(res.data.data)
+    }else{
+        console.log(res.data.data)
+    }
+    isLoading.value = false
 }
+
 const isAllClick = () => {
     isAll.value = !isAll.value
     console.log('isAllClick')
