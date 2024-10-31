@@ -2,7 +2,7 @@
     <div class="home-page w-screen h-screen bg-theme-color-1 flex items-center justify-center">
         <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
             <div class=" w-1/6 bg-theme-color-2 rounded-md relative">
-                <SiderBar :rss-list="rssList" @typeSelect="getFeedList" @articleList="handleCurrentArticleList"/>
+                <SiderBar :rss-list="rssList" @typeSelect="handleFeedList" @articleList="handleCurrentArticleList"/>
                 <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" @click="showModal" >+</button>
             </div>
             <div class="w-3/12">
@@ -74,7 +74,13 @@ const getFeedList = async (tag_id:number) => {
     }
 }
 
-const addRss = async (data) => {
+const handleFeedList = (tag_id:number) => {
+    currentArticleId.value = -1
+    currentArticleList.value = []
+    getFeedList(tag_id)
+}
+
+const addRss = async (data:object) => {
     const res = await addFeedApi(data)
     console.log(res)
     if(res.data.code == 'success'){
