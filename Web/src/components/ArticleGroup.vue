@@ -6,7 +6,7 @@
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="refreshArticleBtnClick" title="同步">
                     <img class="translate-x-[-2000px] drop-shadow-[2000px_0px_rgba(0,0,0,0.5)]" :src="refresh">
                 </li>
-                <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="isAllClick" :title="isAll?'全部':'未读'">
+                <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="isAllClick" :title="isAll?'未读':'全部'">
                     <img class="translate-x-[-2000px] drop-shadow-[2000px_0px_rgba(0,0,0,0.5)]" :src="isAll?round_re:round_fi">
                 </li>
                 <li class="hover:bg-theme-color-1 hover:shadow-lg hover:rounded-lg p-0.5" @click="markAllArticleIsRead"title="全部标记已读">
@@ -15,7 +15,7 @@
             </ul>
        </div>
        <ul class="articles overflow-auto flex-1 border-r-2 border-gray-300" v-if="!isLoading">
-            <li v-for="article in props.articleList" :key="article.id" class="item flex items-center justify-between p-4 hover:bg-gray-300" @click="articleClick(article.article.id)">
+            <li v-for="article in (update==true?updateArticleList:props.articleList)" :key="article.id" class="item flex items-center justify-between p-4 hover:bg-gray-300" @click="articleClick(article.article.id)">
                 <div class="flex items-center w-11/12">
                     <img class="size-2 rounded-full translate-x-[-1000px] drop-shadow-[1000px_0px_rgb(255,92,0)]" :src="article.is_read?'':round_fi">
                     <p class=" text-base ml-2">{{ article.article.title }}</p>
@@ -41,8 +41,11 @@ import check from "../assets/check_circle_cute_re.svg"
 import star from "../assets/star_cute_fi.svg"
 import { markArticleApi } from '../api'
 import { getArticleListApi } from '../api'
+import { title } from 'process'
 const isLoading = ref(false)
 const isAll = ref(true)
+const update = ref(false)
+const updateArticleList = ref([])
 const props = defineProps<{
     articleList: any[],
     titleIsFavorited:Boolean
@@ -50,26 +53,101 @@ const props = defineProps<{
 
 watch(() => props.articleList, (newVal) => {
     console.log('articleList', newVal)
+    update.value = false
 })
 
 const refreshArticleBtnClick = async () => {
     isLoading.value = true;
-    const params = {
-        feed_id: props.articleList[0].article.feed_id
-    }
-    const res = await getArticleListApi(params)
-    if(res.data.code == 'success'){
-        props.articleList.values = res.data.data
-        console.log(res.data.data)
+    isAll.value = true
+    if(props.titleIsFavorited == true){
+        const params = {
+            is_favorited: true
+        }
+        const res = await getArticleListApi(params)
+        if(res.data.code == 'success'){
+            updateArticleList.value = res.data.data
+            update.value = true
+            console.log('refresh success')
+        }else{
+            console.log(res.data.data)
+        }
+        
     }else{
-        console.log(res.data.data)
+        const params = {
+            feed_id: props.articleList[0].article.feed_id
+        }
+        const res = await getArticleListApi(params)
+        if(res.data.code == 'success'){
+            updateArticleList.value = res.data.data
+            update.value = true
+            console.log('refresh success')
+        }else{
+            console.log(res.data.data)
+        }
     }
     isLoading.value = false
 }
 
-const isAllClick = () => {
+const isAllClick = async() => {
     isAll.value = !isAll.value
-    console.log('isAllClick')
+    isLoading.value = true;
+    if(props.titleIsFavorited == false){
+        if(isAll.value){
+            const params = {
+                feed_id: props.articleList[0].article.feed_id
+            }
+            const res = await getArticleListApi(params)
+            if(res.data.code == 'success'){
+                updateArticleList.value = res.data.data
+                update.value = true
+                console.log('isAll success')
+            }else{
+                console.log(res.data.data)
+            }
+        }else{
+            const params = {
+                feed_id: props.articleList[0].article.feed_id,
+                is_read: false
+            }
+            const res = await getArticleListApi(params)
+            if(res.data.code == 'success'){
+                updateArticleList.value = res.data.data
+                update.value = true
+                console.log('isAll success')
+            }else{
+                console.log(res.data.data)
+            }
+        }
+    }else{
+        if(isAll.value){
+            const params = {
+                is_favorited: true
+            }
+            const res = await getArticleListApi(params)
+            if(res.data.code == 'success'){
+                updateArticleList.value = res.data.data
+                update.value = true
+                console.log('isAll success')
+            }else{
+                console.log(res.data.data)
+            }
+        }else{
+            const params = {
+                is_favorited: true,
+                is_read: false
+            }
+            const res = await getArticleListApi(params)
+            if(res.data.code == 'success'){
+                updateArticleList.value = res.data.data
+                update.value = true
+                console.log('isAll success')
+            }else{
+                console.log(res.data.data)
+            }
+        }
+
+    }
+    isLoading.value = false
 }
 
 const emits = defineEmits(['article-selected']);
