@@ -78,7 +78,6 @@ import exit from "../assets/exit_cute_re.svg"
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
 import { getArticleListApi } from '../api'
-import { el } from 'element-plus/es/locales.mjs'
 
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
