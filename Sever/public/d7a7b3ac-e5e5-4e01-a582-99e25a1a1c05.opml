@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <opml version="1.0">
+    <head>
+    <title>My Feeds</title>
+    </head>
+    <body>
+    <outline text="Hi, DIYgod" type="rss" xmlUrl="https://diygod.cc/feed" />
+    <outline text="少数派" type="rss" xmlUrl="https://sspai.com/feed" />
+    <outline text="IT之家" type="rss" xmlUrl="https://www.ithome.com/rss/" />
+    <outline text="时政频道" type="rss" xmlUrl="http://www.people.com.cn/rss/politics.xml" />
+    <outline text="阮一峰的网络日志" type="rss" xmlUrl="http://www.ruanyifeng.com/blog/atom.xml" />
+    <outline text="得到每天听本书" type="rss" xmlUrl="https://gist.githubusercontent.com/shiquda/f11567d7331c7bd34ca0fefef56a7917/raw/podcast.xml" />
+</body></opml>

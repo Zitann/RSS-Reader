@@ -6,12 +6,13 @@ import userRouter from "./routes/user";
 import feedRouter from "./routes/feed";
 import articleRouter from "./routes/article";
 import tagRouter from "./routes/tag";
+import opmlRouter from "./routes/opml";
 
 import Parser from "rss-parser";
 import job from "./utils/parse";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3050;
 
 app.use(express.json());
 app.use(cors());
@@ -21,14 +22,22 @@ app.use(
     secret: "secret",
     algorithms: ["HS256"],
   }).unless({
-    path: ["/login", "/register", "/parser"],
+    path: [
+      "/login",
+      "/register",
+      "/parser",
+      { url: /.*\.opml$/, methods: ["GET"] },
+    ],
   }),
 );
+
+app.use(express.static("public"));
 
 app.use("/", userRouter);
 app.use("/feed", feedRouter);
 app.use("/article", articleRouter);
 app.use("/tag", tagRouter);
+app.use("/opml", opmlRouter);
 
 job.invoke();
 

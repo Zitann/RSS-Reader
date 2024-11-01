@@ -3,7 +3,7 @@ let routerMode = 'hash'
 let avatarUrl = ''
 let baseImgPath
 if(process.env.NODE_ENV == 'development'){
-    baseUrl = 'http://localhost:3000/'
+    baseUrl = 'http://localhost:3050/'
     baseImgPath = 'http://localhost:3000'
     avatarUrl = 'http://localhost:3000'
 }else{

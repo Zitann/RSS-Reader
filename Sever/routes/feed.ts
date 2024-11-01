@@ -7,6 +7,29 @@ import { updateArticleBySubscription } from "../utils/parse";
 const router = express.Router();
 const parser = new Parser();
 
+router.get("/refresh", async (req: express.Request, res) => {
+  const user = req.auth;
+  if (!user) {
+    res.send(Result.fail("用户未登录"));
+    return;
+  }
+
+  const subscriptions = await prisma.userSubscription.findMany({
+    where: {
+      user_id: user.id,
+    },
+    include: {
+      feed: true,
+    },
+  });
+
+  subscriptions.forEach(async (subscription) => {
+    await updateArticleBySubscription(subscription);
+  });
+  res.send(Result.success(null));
+  return;
+});
+
 interface FeedListQuery {
   tag_id: string;
 }
@@ -166,13 +189,6 @@ router.post(
         feed: true,
       },
     });
-
-    try {
-      await updateArticleBySubscription(subscription);
-    } catch (error) {
-      res.send(Result.fail(error));
-      return;
-    }
 
     res.send(Result.success(feed));
     return;
