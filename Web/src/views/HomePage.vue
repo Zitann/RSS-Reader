@@ -3,8 +3,8 @@
         <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
             <div class=" w-1/6 bg-theme-color-2 rounded-md relative">
                 <SiderBar :rss-list="rssList" @typeSelect="handleFeedList" @articleList="handleCurrentArticleList" @title_is_favorited="handleArticleGroupTitle"/>
-                <el-dropdown class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black flex items-center justify-center" trigger="click" placement="top-start">
-                    <span class="i-ion-md-menu size-7 fill-black" />
+                <el-dropdown class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg shadow-2xl hover:bg-gray-300 flex items-center justify-center" trigger="click" placement="top-start">
+                    <img :src="align" class="w-6 h-6" />
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item @click="showModal">添加订阅源</el-dropdown-item>
@@ -41,6 +41,7 @@ import SiderBar from '../components/SiderBar.vue'
 import ArticleGroup from '../components/ArticleGroup.vue'
 import ArticleDetails from '../components/ArticleDetails.vue';
 import IModal from '../components/IModal.vue';
+import align from '../assets/align_justify_cute_re.svg'
 import { ElNotification } from 'element-plus'  // 用于消息通知
 import { getFeedListApi, addFeedApi } from '../api';
 import tokenStore from '../utils/store';

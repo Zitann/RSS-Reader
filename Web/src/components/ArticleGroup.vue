@@ -51,7 +51,6 @@ const props = defineProps<{
 }>();
 
 watch(() => props.articleList, (newVal) => {
-    console.log('articleList', newVal)
     update.value = false
 })
 
