@@ -1,3 +1,4 @@
+const { iconsPlugin, getIconCollections } = require("@egoist/tailwindcss-icons")
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -23,6 +24,10 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    iconsPlugin({
+      collections: getIconCollections('all'),
+    }),
+  ],
 }
 

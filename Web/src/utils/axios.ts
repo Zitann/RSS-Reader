@@ -20,11 +20,11 @@ service.interceptors.request.use(
     }
 )
 
-// 向应拦截器
-service.interceptors.response.use(
-    error => {
-        console.log(error)
-        return error
-    }
-)
+// // 向应拦截器
+// service.interceptors.response.use(
+//     error => {
+//         console.log(error)
+//         return error
+//     }
+// )
 export default service

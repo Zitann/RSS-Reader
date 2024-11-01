@@ -3,7 +3,16 @@
         <div class="center-content bg-theme-color-white rounded-md shadow-lg shadow-theme-color-3 flex w-full h-full xl:w-3/4 xl:h-5/6">
             <div class=" w-1/6 bg-theme-color-2 rounded-md relative">
                 <SiderBar :rss-list="rssList" @typeSelect="handleFeedList" @articleList="handleCurrentArticleList" @title_is_favorited="handleArticleGroupTitle"/>
-                <button class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black" @click="showModal" >+</button>
+                <el-dropdown class="absolute bottom-5 right-5 bg-theme-color-3 h-10 w-10 text-center leading-10 rounded-lg text-zinc-100 font-bold text-2xl shadow-2xl hover:bg-gray-300 hover:text-black flex items-center justify-center" trigger="click" placement="top-start">
+                    <span class="i-ion-md-menu size-7 fill-black" />
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item @click="showModal">添加订阅源</el-dropdown-item>
+                            <el-dropdown-item @click="uploadOPML">导入OPML</el-dropdown-item>
+                            <el-dropdown-item @click="downloadOPML">导出OPML</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </div>
             <div class="w-3/12">
                 <ArticleGroup @article-selected="handleArticleSelected" :articleList="currentArticleList" :titleIsFavorited="articleGroupTitle_is_favorited" />
@@ -23,6 +32,7 @@
             </div>
         </IModal>
     </div>
+    <input type="file" id="file" style="display:none" accept=".opml"/>
 </template>
 
 
@@ -123,5 +133,40 @@ const closeModal = () => {
 const submitModal = () => {
     addRss({tag_id:currentType.value,url:url.value})
     closeModal();
+}
+const uploadOPML = () => {
+    // 弹出文件选择框
+    const file = document.getElementById('file')!
+    file.click()
+    file.onchange = (e:any) => {
+        const file = e.target.files[0]
+        if(!file){
+            ElNotification({
+                title: '导入失败',
+                message: '文件为空',
+                type: 'error'
+            })
+            return
+        }else if(file.type !== 'text/xml'){
+            ElNotification({
+                title: '导入失败',
+                message: '文件格式错误',
+                type: 'error'
+            })
+            return
+        }
+        const reader = new FileReader()
+        reader.readAsText(file)
+        reader.onload = (e:any) => {
+            console.log(e.target.result)
+        }
+    }
+}
+const downloadOPML = () => {
+    // 无法选择文件保存路径
+    // const a = document.createElement('a')
+    // a.href = 'http://localhost:8000/api/feed/export'
+    // a.download = 'rss.opml'
+    // a.click()
 }
 </script>
