@@ -41,6 +41,7 @@ import check from "../assets/check_circle_cute_re.svg"
 import star from "../assets/star_cute_fi.svg"
 import { markArticleApi } from '../api'
 import { getArticleListApi } from '../api'
+import { tagEmits } from 'element-plus'
 const isLoading = ref(false)
 const isAll = ref(true)
 const update = ref(false)
@@ -48,6 +49,7 @@ const updateArticleList = ref<any[]>([])
 const props = defineProps<{
     articleList: any[],
     titleIsFavorited:Boolean
+    currentTagId: number
 }>();
 
 watch(() => props.articleList, (newVal) => {
@@ -59,8 +61,10 @@ const refreshArticleBtnClick = async () => {
     isAll.value = true
     if(props.titleIsFavorited == true){
         const params = {
-            is_favorited: true
+            is_favorited: true,
+            tag_id:props.currentTagId
         }
+        console.log(params)
         const res = await getArticleListApi(params)
         if(res.data.code == 'success'){
             updateArticleList.value = res.data.data
@@ -92,7 +96,8 @@ const isAllClick = async() => {
     if(props.titleIsFavorited == false){
         if(isAll.value){
             const params = {
-                feed_id: props.articleList[0].article.feed_id
+                feed_id: props.articleList[0].article.feed_id,
+                tag_id:props.currentTagId
             }
             const res = await getArticleListApi(params)
             if(res.data.code == 'success'){
@@ -105,6 +110,7 @@ const isAllClick = async() => {
         }else{
             const params = {
                 feed_id: props.articleList[0].article.feed_id,
+                tag_id:props.currentTagId,
                 is_read: false
             }
             const res = await getArticleListApi(params)
@@ -119,7 +125,8 @@ const isAllClick = async() => {
     }else{
         if(isAll.value){
             const params = {
-                is_favorited: true
+                is_favorited: true,
+                tag_id:props.currentTagId
             }
             const res = await getArticleListApi(params)
             if(res.data.code == 'success'){
@@ -132,6 +139,7 @@ const isAllClick = async() => {
         }else{
             const params = {
                 is_favorited: true,
+                tag_id:props.currentTagId,
                 is_read: false
             }
             const res = await getArticleListApi(params)
@@ -198,8 +206,7 @@ const markAllArticleIsRead = async () => {
         console.log('标记失败')
     }
     }
-    
-    
+    refreshArticleBtnClick
     console.log('markAllArticleIsRead');
 };
 

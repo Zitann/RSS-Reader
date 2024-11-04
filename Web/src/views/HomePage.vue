@@ -15,7 +15,7 @@
                 </el-dropdown>
             </div>
             <div class="w-3/12">
-                <ArticleGroup @article-selected="handleArticleSelected" :articleList="currentArticleList" :titleIsFavorited="articleGroupTitle_is_favorited" />
+                <ArticleGroup @article-selected="handleArticleSelected" :articleList="currentArticleList" :titleIsFavorited="articleGroupTitle_is_favorited" :currentTagId ="currentType"/>
             </div>
             <div class="w-7/12">
                 <ArticleDetails :article_id="currentArticleId" ref="articleDetail"/>
