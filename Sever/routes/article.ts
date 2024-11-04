@@ -55,16 +55,6 @@ router.get(
             },
           },
         },
-        user: {
-          select: {
-            subscriptions: {
-              select: {
-                user_id: true,
-                tag_id: true,
-              },
-            },
-          },
-        },
         is_read: true,
         is_favorited: true,
       },
