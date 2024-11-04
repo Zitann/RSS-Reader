@@ -77,8 +77,9 @@ import star from "../assets/star_cute_fi.svg"
 import exit from "../assets/exit_cute_re.svg"
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
-import { getArticleListApi } from '../api'
+import { addFeedApi, getArticleListApi } from '../api'
 import{deleteFeedApi} from '../api'
+import{updateFeedApi} from '../api'
 import { de } from 'element-plus/es/locales.mjs'
 import { get } from 'http'
 import { ElNotification } from 'element-plus'
@@ -110,6 +111,7 @@ const ModalData = ref({
 const typeSelect = (index: number) => {
     activeIndex.value = index
     emit('typeSelect', index)
+    console.log('typeSelect',index)
     //favoriteArticleList()
 }
 const exitClick = () => {
@@ -194,7 +196,7 @@ const deleteRss = async () => {
     const res = await deleteFeedApi(activeRssid.value)
     if(res.data.code == 'success'){
         console.log('取消订阅成功')
-        typeSelect(1)
+        typeSelect(activeIndex.value)
         ElNotification({
             title: '取消订阅成功',
             message: '取消订阅成功',
@@ -205,7 +207,21 @@ const deleteRss = async () => {
     }
     console.log('deleteRss',activeRssid.value)
 }
-const changeTag = async (tag_id:number) => {
-    console.log('changeTag',tag_id)
+
+const changeTag = async (newtag_id:number) => {
+    const params = {
+        tag_id: newtag_id
+    }
+    const res = await updateFeedApi(activeRssid.value,params)
+    console.log(activeRssid.value)
+
+    if(res.data.code == 'success'){
+        console.log(res.data.data)
+        typeSelect(activeIndex.value)
+    }else{
+        console.log(res.data.data)
+    }
+    console.log('changeTag',newtag_id)
 }
+
 </script>

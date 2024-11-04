@@ -98,7 +98,7 @@ const addRss = async (data:object) => {
             message: '添加成功',
             type: 'success'
         })
-        getFeedList(1)
+        getFeedList(currentType.value)
     }else{
         ElNotification({
             title: '添加失败',

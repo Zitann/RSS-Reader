@@ -35,6 +35,7 @@ router.get(
           subscriptions: {
             some: {
               tag_id: tag_id ? parseInt(tag_id) : undefined,
+              feed_id: feed_id ? parseInt(feed_id) : undefined,
             },
           },
         },
