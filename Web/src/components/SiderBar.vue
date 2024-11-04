@@ -78,6 +78,10 @@ import exit from "../assets/exit_cute_re.svg"
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
 import { getArticleListApi } from '../api'
+import{deleteFeedApi} from '../api'
+import { de } from 'element-plus/es/locales.mjs'
+import { get } from 'http'
+import { ElNotification } from 'element-plus'
 
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
@@ -181,7 +185,24 @@ const submitModal = () => {
         router.push('/login')
     }
 }
+
+//删除订阅源
+// export function deleteFeedApi(feed_id: number) {
+//     return fetch.delete(`/feed/${feed_id}`)
+// }
 const deleteRss = async () => {
+    const res = await deleteFeedApi(activeRssid.value)
+    if(res.data.code == 'success'){
+        console.log('取消订阅成功')
+        typeSelect(1)
+        ElNotification({
+            title: '取消订阅成功',
+            message: '取消订阅成功',
+            type: 'success'
+        })
+    }else{
+        console.log(res.data.data)
+    }
     console.log('deleteRss',activeRssid.value)
 }
 const changeTag = async (tag_id:number) => {
