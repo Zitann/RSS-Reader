@@ -30,11 +30,11 @@ router.get(
         user_id: id,
         article: {
           feed_id: feed_id ? parseInt(feed_id) : undefined,
-        },
-        user: {
-          subscriptions: {
-            some: {
-              tag_id: tag_id ? parseInt(tag_id) : undefined,
+          feed: {
+            users: {
+              some: {
+                tag_id: tag_id ? parseInt(tag_id) : undefined,
+              },
             },
           },
         },
