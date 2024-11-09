@@ -13,7 +13,8 @@
                 <div class="right-part flex w-1/2 h-full bg-theme-color-white relative flex-col justify-center p-30"
                     v-if="!isRegister" key="login">
                     <div class="form flex flex-col items-center space-y-3" @keyup.enter="handleLogin">
-                        <el-input class="w-8/12" placeholder="邮箱" v-model="loginInfo.email" />
+                        <el-input class="w-8/12" placeholder="邮箱" v-model="loginInfo.email" @blur="checkEmail(loginInfo.email)" />
+                        <p class=" text-sm leading-3 w-8/12 text-red-600" v-show="wrong">邮箱格式错误</p>
                         <el-input class=" w-8/12" placeholder="密码" type="password" v-model="loginInfo.password" />
                     </div>
                     <div class="action mt-8 flex justify-center">
@@ -32,7 +33,8 @@
                     </div>
                     <div class="form flex flex-col items-center space-y-3" @keyup.enter="handleRegister">
                         <el-input class=" w-8/12" placeholder="用户名" v-model="registerInfo.username" />
-                        <el-input class=" w-8/12" placeholder="邮箱" v-model="registerInfo.email" />
+                        <el-input class=" w-8/12" placeholder="邮箱" v-model="registerInfo.email" @blur="checkEmail(registerInfo.email)" />
+                        <p class=" text-sm leading-3 w-8/12 text-red-600" v-show="wrong">邮箱格式错误</p>
                         <el-input class=" w-8/12" placeholder="密码" type="password" v-model="registerInfo.password" />
                         <el-input class=" w-8/12" placeholder="确认密码" type="password" v-model="registerInfo.repassword" />
                     </div>
@@ -55,6 +57,7 @@ import { useRouter } from 'vue-router';
 import axios from "axios";
 const token = tokenStore()
 const router = useRouter()
+const wrong = ref(false)
 const welcomeInfo = ref({
     hitokoto: '',
     from: ''
@@ -76,6 +79,14 @@ onMounted(async () => {
     welcomeInfo.value.from = res.data.from
 })
 const handleLogin = async () => {
+    if (loginInfo.value.email !='123' && wrong.value) {
+        ElNotification({
+            title: '登录失败',
+            message: '邮箱格式错误',
+            type: 'error'
+        })
+        return
+    }
     if (!loginInfo.value.email || !loginInfo.value.password) {
         ElNotification({
             title: '登录失败',
@@ -102,6 +113,14 @@ const handleLogin = async () => {
     }
 }
 const handleRegister = async () => {
+    if (wrong.value) {
+        ElNotification({
+            title: '注册失败',
+            message: '邮箱格式错误',
+            type: 'error'
+        })
+        return
+    }
     if (!registerInfo.value.username || !registerInfo.value.email || !registerInfo.value.password || !registerInfo.value.repassword) {
         ElNotification({
             title: '注册失败',
@@ -138,4 +157,14 @@ const handleRegister = async () => {
         })
     }
 }
+const checkEmail = (str:string) => {
+      //邮箱验证的正则表达式
+    const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+    if (!reg.test(str)&&str) {
+        wrong.value = true;
+    } else {
+        wrong.value = false;
+    }
+}
+
 </script>
