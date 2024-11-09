@@ -43,7 +43,7 @@ import ArticleDetails from '../components/ArticleDetails.vue';
 import IModal from '../components/IModal.vue';
 import align from '../assets/align_justify_cute_re.svg'
 import { ElNotification } from 'element-plus'  // 用于消息通知
-import { getFeedListApi, addFeedApi } from '../api';
+import { getFeedListApi, addFeedApi, downloadOpmlApi, uploadOpmlApi } from '../api';
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
 import { onMounted, ref} from 'vue';
@@ -163,11 +163,13 @@ const uploadOPML = () => {
         }
     }
 }
-const downloadOPML = () => {
+const downloadOPML = async () => {
     // 无法选择文件保存路径
-    // const a = document.createElement('a')
-    // a.href = 'http://localhost:8000/api/feed/export'
-    // a.download = 'rss.opml'
+    const a = document.createElement('a')
+    let res = await downloadOpmlApi()
+    a.href = 'http://localhost:3000' + res.data.data
+    a.download = 'rss.opml'
+    console.log(a.href)
     // a.click()
 }
 </script>

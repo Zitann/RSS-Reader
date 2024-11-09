@@ -43,3 +43,11 @@ export function getArticleApi(article_id: number) {
 export function markArticleApi(data:any) {
     return fetch.put('/article', data)
 }
+//下载OPML文件
+export function downloadOpmlApi() {
+    return fetch.get('/opml')
+}
+//上传OPML文件
+export function uploadOpmlApi(data:any) {
+    return fetch.post('/opml', data)
+}
