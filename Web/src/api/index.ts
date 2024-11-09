@@ -44,8 +44,10 @@ export function markArticleApi(data:any) {
     return fetch.put('/article', data)
 }
 //下载OPML文件
-export function downloadOpmlApi() {
-    return fetch.get('/opml')
+export function downloadOpmlApi(tag_id: number) {
+    return fetch.get('/opml', {
+        params: {tag_id}
+    })
 }
 //上传OPML文件
 export function uploadOpmlApi(data:any) {

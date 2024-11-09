@@ -148,28 +148,39 @@ const uploadOPML = () => {
                 type: 'error'
             })
             return
-        }else if(file.type !== 'text/xml'){
-            ElNotification({
-                title: '导入失败',
-                message: '文件格式错误',
-                type: 'error'
-            })
-            return
         }
-        const reader = new FileReader()
-        reader.readAsText(file)
-        reader.onload = (e:any) => {
-            console.log(e.target.result)
-        }
+        const formData = new FormData()
+        formData.append('tag_id', currentType.value.toString())
+        formData.append('opml', file)
+        uploadOpmlApi(formData).then(res=>{
+            if(res.data.code == 'success'){
+                ElNotification({
+                    title: '导入成功',
+                    message: '导入成功',
+                    type: 'success'
+                })
+                getFeedList(currentType.value)
+            }else{
+                ElNotification({
+                    title: '导入失败',
+                    message: res.data.data,
+                    type: 'error'
+                })
+            }
+            getFeedList(currentType.value)
+        })
     }
 }
 const downloadOPML = async () => {
     // 无法选择文件保存路径
-    const a = document.createElement('a')
-    let res = await downloadOpmlApi()
-    a.href = 'http://localhost:3000' + res.data.data
-    a.download = 'rss.opml'
-    console.log(a.href)
-    // a.click()
+    const a = document.createElement('a');
+    let res = await downloadOpmlApi(currentType.value)
+    let fileUrl = 'http://localhost:3000' + res.data.data
+    const blob = await fetch(fileUrl).then(r => r.blob());
+    const blobUrl = URL.createObjectURL(blob);
+    a.href = blobUrl;
+    a.download = 'rss.opml';
+    a.click();
+    URL.revokeObjectURL(blobUrl);
 }
 </script>
