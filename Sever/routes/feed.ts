@@ -8,6 +8,7 @@ const router = express.Router();
 const parser = new Parser();
 
 router.get("/refresh", async (req: express.Request, res) => {
+  console.log("refresh");
   const user = req.auth;
   if (!user) {
     res.send(Result.fail("用户未登录"));
@@ -40,6 +41,7 @@ router.get(
     req: express.Request<unknown, unknown, unknown, FeedListQuery>,
     res,
   ) => {
+    console.log("get feed list");
     const user = req.auth;
     if (!user) {
       res.send(Result.fail("用户未登录"));
@@ -70,6 +72,7 @@ interface FeedParams {
 }
 
 router.get("/:id", async (req: express.Request<FeedParams>, res) => {
+  console.log("get feed");
   const user = req.auth;
   if (!user) {
     res.send(Result.fail("用户未登录"));
@@ -189,6 +192,8 @@ router.post(
         feed: true,
       },
     });
+
+    updateArticleBySubscription(subscription);
 
     res.send(Result.success(feed));
     return;

@@ -65,6 +65,8 @@ router.get(
       },
     });
 
+    console.log(statusList);
+
     res.send(Result.success(statusList));
     return;
   },

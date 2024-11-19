@@ -77,11 +77,9 @@ import star from "../assets/star_cute_fi.svg"
 import exit from "../assets/exit_cute_re.svg"
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
-import { addFeedApi, getArticleListApi } from '../api'
+import { getArticleListApi } from '../api'
 import{deleteFeedApi} from '../api'
 import{updateFeedApi} from '../api'
-import { de } from 'element-plus/es/locales.mjs'
-import { get } from 'http'
 import { ElNotification } from 'element-plus'
 
 const token = tokenStore()  // 使用token.token对token进行操作

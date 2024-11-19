@@ -1,0 +1,1 @@
+{"root":["./src/main.ts","./src/vite-env.d.ts","./src/api/index.ts","./src/utils/axios.ts","./src/utils/env.ts","./src/utils/store.ts","./src/app.vue","./src/components/articledetails.vue","./src/components/articlegroup.vue","./src/components/imodal.vue","./src/components/siderbar.vue","./src/views/homepage.vue","./src/views/loginregisterpage.vue"],"version":"5.6.3"}
