@@ -1,7 +1,7 @@
 <template>
     <div class="sider-bar text-theme-color-white h-full flex flex-col">
         <div class="user flex items-center justify-center relative">
-            <img class="w-20 h-20 rounded-full my-5" :src="userAvatar">
+            <img class="w-20 h-20 rounded-full my-5" src="/vite.svg">
             <div class="absolute top-auto left-auto rounded-full w-20 h-20 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300" @click="exitClick">
                 <img class="w-8 h-8 translate-x-[-1000px] drop-shadow-[1000px_0px_rgba(255,255,255,1.00)]" :src="exit" alt="Exit Icon">
             </div>
@@ -77,11 +77,9 @@ import star from "../assets/star_cute_fi.svg"
 import exit from "../assets/exit_cute_re.svg"
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
-import { addFeedApi, getArticleListApi } from '../api'
+import { getArticleListApi } from '../api'
 import{deleteFeedApi} from '../api'
 import{updateFeedApi} from '../api'
-import { de } from 'element-plus/es/locales.mjs'
-import { get } from 'http'
 import { ElNotification } from 'element-plus'
 
 const token = tokenStore()  // 使用token.token对token进行操作
@@ -89,7 +87,6 @@ const router = useRouter()
 const emit = defineEmits(['typeSelect','articleList','title_is_favorited'])
 
 const isModalVisible = ref(false)
-const userAvatar = ref('https://avatars.githubusercontent.com/u/23514289?v=4')
 const menuList = ref([
     { index: 1, title: '文章', icon: paper,color:'drop-shadow(1000px 0px rgb(255,92,0))'},
     { index: 2, title: '社交媒体', icon: twitter,color:'drop-shadow(1000px 0px rgb(2,132,199))'},
