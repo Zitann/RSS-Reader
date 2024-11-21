@@ -10,6 +10,7 @@ type Subscription = UserSubscription & Record<"feed", Feed>;
 export const updateArticleBySubscription = async (
   subscription: Subscription,
 ) => {
+  console.log("updateArticleBySubscription");
   const {
     feed: { url, id },
     user_id,
@@ -41,7 +42,20 @@ export const updateArticleBySubscription = async (
           },
         });
       } else {
-        break;
+        const status = await prisma.userArticleStatus.findFirst({
+          where: {
+            user_id,
+            article_id: article.id,
+          },
+        });
+        if (!status) {
+          await prisma.userArticleStatus.create({
+            data: {
+              user_id,
+              article_id: article.id,
+            },
+          });
+        }
       }
     }
   } catch (error) {

@@ -10,6 +10,7 @@ import opmlRouter from "./routes/opml";
 
 import Parser from "rss-parser";
 import job from "./utils/parse";
+import path from "path";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,10 +24,14 @@ app.use(
     algorithms: ["HS256"],
   }).unless({
     path: [
+      "/",
+      "/home",
       "/login",
       "/register",
       "/parser",
       { url: /.*\.opml$/, methods: ["GET"] },
+      // CSS, JS, images
+      { url: /.*\.(css|js|png|jpg|jpeg|gif|svg|ico)$/, methods: ["GET"] },
     ],
   }),
 );
@@ -38,6 +43,14 @@ app.use("/feed", feedRouter);
 app.use("/article", articleRouter);
 app.use("/tag", tagRouter);
 app.use("/opml", opmlRouter);
+
+// 静态资源目录
+app.use(express.static(path.join(__dirname, "dist")));
+
+// 处理所有路由请求
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+});
 
 job.invoke();
 

@@ -41,7 +41,6 @@ import check from "../assets/check_circle_cute_re.svg"
 import star from "../assets/star_cute_fi.svg"
 import { markArticleApi } from '../api'
 import { getArticleListApi } from '../api'
-import { tagEmits } from 'element-plus'
 const isLoading = ref(false)
 const isAll = ref(true)
 const update = ref(false)
@@ -52,7 +51,7 @@ const props = defineProps<{
     currentTagId: number
 }>();
 
-watch(() => props.articleList, (newVal) => {
+watch(() => props.articleList, () => {
     update.value = false
 })
 
