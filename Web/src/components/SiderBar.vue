@@ -206,6 +206,14 @@ const deleteRss = async () => {
 }
 
 const changeTag = async (newtag_id:number) => {
+    if(newtag_id == activeIndex.value){
+        ElNotification({
+            title: '修改类别失败',
+            message: '新类别与原类别相同',
+            type: 'error'
+        })
+        return
+    }
     const params = {
         tag_id: newtag_id
     }
