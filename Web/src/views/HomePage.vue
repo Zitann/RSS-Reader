@@ -47,6 +47,7 @@ import { getFeedListApi, addFeedApi, downloadOpmlApi, uploadOpmlApi } from '../a
 import tokenStore from '../utils/store';
 import { useRouter } from 'vue-router';
 import { onMounted, ref} from 'vue';
+import { baseUrl } from "../utils/env";
 
 const token = tokenStore()  // 使用token.token对token进行操作
 const router = useRouter()
@@ -175,7 +176,7 @@ const downloadOPML = async () => {
     // 无法选择文件保存路径
     const a = document.createElement('a');
     let res = await downloadOpmlApi(currentType.value)
-    let fileUrl = 'http://localhost:3000' + res.data.data
+    let fileUrl = baseUrl + res.data.data
     const blob = await fetch(fileUrl).then(r => r.blob());
     const blobUrl = URL.createObjectURL(blob);
     a.href = blobUrl;
